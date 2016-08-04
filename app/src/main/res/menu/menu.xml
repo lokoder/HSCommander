@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--
+    <item
+        android:id="@+id/action_favorite"
+        android:icon="@drawable/chip"
+        android:title="xyz"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_favorite2"
+        android:icon="@drawable/chip"
+        android:title="vfr"
+        app:showAsAction="ifRoom"/>
+    -->
+
+    <!-- Settings, should always be in the overflow -->
+    <item android:id="@+id/start_ambiente"
+        android:title="Ambientes"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/start_novo_sensor"
+        android:title="Novo Sensor"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/start_sensores"
+        android:title="Sensores"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/start_varredura"
+        android:title="Varredura"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/start_wificred"
+        android:title="Dados WiFi"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/start_zerabanco"
+        android:title="Zerar BD"
+        app:showAsAction="never"/>
+
+
+</menu>
