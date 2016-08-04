@@ -126,7 +126,14 @@ public class SensoresActivity extends AppCompatActivity {
 
         sensoresAdapter = new SensoresAdapter(this, SensorSingleton.getInstance().getListSensorProd());
         listView.setAdapter(sensoresAdapter);
-        txtStatus.setText(sensoresAdapter.getCount() + " sensores ativos");
+
+        if (sensoresAdapter.getCount() == 0)
+            txtStatus.setText("Nenhum sensor ativo");
+        else if (sensoresAdapter.getCount() == 1)
+            txtStatus.setText("1 sensor ativo");
+        else if (sensoresAdapter.getCount() > 1)
+                txtStatus.setText(sensoresAdapter.getCount() + " sensores ativos");
+
     }
 
 

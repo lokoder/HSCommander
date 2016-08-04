@@ -88,7 +88,7 @@ public class DetalheSensorActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DetalheSensorActivity.this, "Clique longo para selecionar a imagem", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetalheSensorActivity.this, "Clique longo para escolher uma imagem", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -106,26 +106,16 @@ public class DetalheSensorActivity extends AppCompatActivity {
 
         listViewCarga.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(DetalheSensorActivity.this, "Clique longo para detalhe da carga", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        listViewCarga.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long l) {
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long l) {
 
                 Carga carga = (Carga) adapter.getItemAtPosition(position);
                 if (carga == null)
-                    return false;
+                    return;
 
                 Intent i = new Intent(DetalheSensorActivity.this, DetalheCargaActivity.class);
                 i.putExtra("id", carga.getId());
 
                 startActivity(i);
-
-                return true;
             }
         });
 

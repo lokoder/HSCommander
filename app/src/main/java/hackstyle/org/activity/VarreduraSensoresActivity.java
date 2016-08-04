@@ -72,6 +72,8 @@ public class VarreduraSensoresActivity extends AppCompatActivity {
         int num = list.size();
         txtSensoresCadastrados.setText(Integer.toString(num));
 
+        SensorSingleton.getInstance().eraseListSensorProd();
+
         checkSensors = new CheckSensors(this);
         checkSensors.execute();
     }
@@ -126,16 +128,23 @@ public class VarreduraSensoresActivity extends AppCompatActivity {
             } else {
 
                 new AlertDialog.Builder(VarreduraSensoresActivity.this)
-                        .setMessage("Nenhum sensor foi detectado!")
+                        .setMessage("Nenhum sensor foi detectado! Realizar a varredura novamente?")
                         .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Intent i = new Intent(VarreduraSensoresActivity.this, IntroActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                context.startActivity(i);
+
+                                Intent intent = new Intent(VarreduraSensoresActivity.this, VarreduraSensoresActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
                                 finish();
-                            }
-                        }).show();
+
+                            }}).setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(VarreduraSensoresActivity.this, IntroActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent);
+                                finish();
+                            }}).show();
 
             }
         }
@@ -156,7 +165,7 @@ public class VarreduraSensoresActivity extends AppCompatActivity {
             txtSensoresEncontrados.setText(Integer.toString(nrEncontrados+1));
             if (nrEncontrados+1 == nrCadastrados) {
 
-                new AlertDialog.Builder(VarreduraSensoresActivity.this)
+                /*new AlertDialog.Builder(VarreduraSensoresActivity.this)
                         .setMessage("Os sensores cadastrados já foram encontrados. Deseja continuar escaneando a rede à procura de outros sensores?")
                         .setCancelable(false)
                         .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
@@ -165,16 +174,18 @@ public class VarreduraSensoresActivity extends AppCompatActivity {
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
+                    */
                                 checkSensors.cancel(true);
                                 if (SensorSingleton.getInstance().getListSensorProd().size() > 0) {
                                     Intent intent = new Intent(context, SensoresActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startActivity(intent);
+
+                                    checkSensors.cancel(true);
                                     finish();
                                 }
-                            }
-                        }).show();
+                       /*     }
+                        }).show(); */
             }
 
         }
@@ -222,7 +233,7 @@ public class VarreduraSensoresActivity extends AppCompatActivity {
 
                     byte[] b = new byte[256];
 
-                    sock.setSoTimeout(5000);
+                    sock.setSoTimeout(3000);
                     int bytes = sock.getInputStream().read(b);
                     sock.close();
 
