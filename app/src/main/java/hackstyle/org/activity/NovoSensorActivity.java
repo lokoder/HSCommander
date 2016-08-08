@@ -31,7 +31,6 @@ import java.util.List;
 import hackstyle.org.dao.AmbienteDAO;
 import hackstyle.org.dao.SensorDAO;
 import hackstyle.org.hscommander.R;
-import hackstyle.org.main.SensorSingleton;
 import hackstyle.org.pojo.Ambiente;
 import hackstyle.org.pojo.Carga;
 import hackstyle.org.pojo.Sensor;
@@ -192,7 +191,7 @@ public class NovoSensorActivity extends AppCompatActivity {
 
 
         sensorIP = getIntent().getStringExtra("sensorIP");
-        txtIP.setText("Sensor pronto para ser configurado em " + sensorIP);
+        txtIP.setText("Novo sensor encontrado em " + sensorIP);
 
     }
 
@@ -222,8 +221,8 @@ public class NovoSensorActivity extends AppCompatActivity {
                 break;
 
             case R.id.start_varredura:
-                i = new Intent(this, VarreduraSensoresActivity.class);
-                startActivity(i);
+               // i = new Intent(this, VarreduraSensoresActivity.class);
+               // startActivity(i);
                 break;
 
             case R.id.start_wificred:
@@ -277,7 +276,7 @@ public class NovoSensorActivity extends AppCompatActivity {
 
                 byte[] b = new byte[256];
 
-                sock.setSoTimeout(5000);
+                sock.setSoTimeout(8000);
                 int bytes = sock.getInputStream().read(b); //a resposta é um getinfo do novo sensor
                 sock.close();
 
@@ -287,19 +286,15 @@ public class NovoSensorActivity extends AppCompatActivity {
                 if (sensor == null) {
                     //getinfo nao é valido
                     Log.e("CONN", "A resposta getinfo para nossa requisição setinfo nao é valida.. ");
-                    throw new Exception("A resposta getinfo para nossa requisição setinfo nao é valida.. ");
+                    return null;
                 }
-
-                sensor.setIp(sensorIP);
-                sensor.setPorta(8000);
-
-                SensorSingleton.getInstance().addSensorProd(sensor);
 
                 return result;
 
             } catch (Exception e) {
                 //timeout do socket
-                Log.e("CONN", e.getMessage());
+                if (e.getMessage() != null)
+                    Log.e("CONN", e.getMessage());
                 //Toast.makeText(HSCommander.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
 

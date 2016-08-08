@@ -1,4 +1,4 @@
-package hackstyle.org.main;
+/*package hackstyle.org.main;
 
 
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.List;
 
 import hackstyle.org.dao.SensorDAO;
 import hackstyle.org.pojo.Sensor;
+
 
 public class SensorSingleton {
 
@@ -85,4 +86,4 @@ public class SensorSingleton {
         return listSensorErr.size();
     }
 
-}
+}*/

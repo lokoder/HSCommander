@@ -12,11 +12,11 @@ tools:context="hackstyle.org.activity.DetalheSensorActivity"
 android:orientation="vertical"
     android:background="@drawable/irongrip_repeating">
 
-<LinearLayout
+    <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="1">
+    android:layout_height="0dp"
+    android:layout_weight="0.47">
 
     <TextView
         android:layout_width="match_parent"
@@ -57,7 +57,8 @@ android:orientation="vertical"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingTop="30dp">
+            android:paddingTop="30dp"
+            android:id="@+id/llSensorInfo">
 
             <TextView
                 android:layout_width="match_parent"
@@ -127,7 +128,7 @@ android:orientation="vertical"
 
 </LinearLayout>
 
-<TextView
+    <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Cargas"
@@ -140,18 +141,46 @@ android:orientation="vertical"
     android:textSize="14dp"
     android:gravity="center" />
 
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="1">
-
-    <ListView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/listViewSensorCargas"
-        android:layout_gravity="center_horizontal" />
-</LinearLayout>
+        android:layout_height="0dp"
+        android:layout_weight="0.47">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listViewSensorCargas"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.06"
+        android:id="@+id/llResponse"
+        android:visibility="visible"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/imageView2"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Response"
+            android:id="@+id/txtResponse"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:layout_marginLeft="10dp" />
+    </LinearLayout>
 
 </LinearLayout>
 

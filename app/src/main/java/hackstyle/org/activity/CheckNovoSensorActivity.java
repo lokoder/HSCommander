@@ -1,5 +1,6 @@
 package hackstyle.org.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,7 +11,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
@@ -50,9 +50,12 @@ public class CheckNovoSensorActivity extends AppCompatActivity {
     private class CheckNewSensor extends AsyncTask<Void, Void, String> {
 
         Context context;
+        Activity activity;
 
-        public CheckNewSensor(Context context) {
-            this.context = context.getApplicationContext();
+        public CheckNewSensor(Activity activity) {
+
+            this.context = activity.getApplicationContext();
+            this.activity = activity;
         }
 
         @Override
@@ -111,13 +114,9 @@ public class CheckNovoSensorActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                finish();
+                                activity.finish();
                             }
                         }).show();
-
-                //Intent i = new Intent(context, IntroActivity.class);
-                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                //context.startActivity(i);
 
             } else {
 
@@ -125,7 +124,7 @@ public class CheckNovoSensorActivity extends AppCompatActivity {
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("sensorIP", sensorIP);
                 context.startActivity(i);
-                finish();
+                activity.finish();
             }
 
         }

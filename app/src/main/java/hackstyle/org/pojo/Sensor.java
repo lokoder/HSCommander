@@ -15,6 +15,7 @@ public class Sensor {
     private int porta;
     private String imagePath;
     private List<Carga> listCarga;
+    private boolean isActive;
 
     public Sensor() {
 
@@ -26,6 +27,7 @@ public class Sensor {
         this.icone = -1;
         this.porta = 8000;
         this.imagePath = "";
+        isActive = false;
     }
 
 
@@ -125,6 +127,14 @@ public class Sensor {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
 

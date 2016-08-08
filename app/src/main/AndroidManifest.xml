@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name="hackstyle.org.activity.NovoSensorActivity" />
-        <activity android:name="hackstyle.org.activity.VarreduraSensoresActivity" />
+        <activity android:name="hackstyle.org.activity.VarreduraSensoresActivity" android:noHistory="true" />
         <activity android:name="hackstyle.org.main.HSCommander" />
         <activity android:name="hackstyle.org.activity.SensoresActivity" />
         <activity android:name="hackstyle.org.activity.CheckNovoSensorActivity" />
@@ -35,7 +35,11 @@
         <activity
             android:name="hackstyle.org.activity.NovoAmbienteActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name="hackstyle.org.activity.WiFiCredentialsActivity"></activity>
+        <activity android:name="hackstyle.org.activity.WiFiCredentialsActivity" />
+        <activity android:name="hackstyle.org.activity.ComandosGeraisActivity"></activity>
+
+        <service android:name="hackstyle.org.service.SensorCollector"
+            android:exported="false"></service>
     </application>
 
 </manifest>

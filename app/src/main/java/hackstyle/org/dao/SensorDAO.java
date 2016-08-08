@@ -23,6 +23,9 @@ public class SensorDAO {
     public int insertSensor(Sensor sensor) {
 
         ContentValues c = new ContentValues();
+        if (sensor.getId() != -1)
+            c.put("id", sensor.getId());
+
         c.put("nome", sensor.getNome());
         c.put("icone", sensor.getIcone());
         c.put("id_ambiente", sensor.getAmbiente().getId());
@@ -59,6 +62,11 @@ public class SensorDAO {
     public int updateIP(Sensor sensor) {
 
         return dbAdapter.updateSensorIP(sensor);
+    }
+
+
+    public void closeConnection() {
+        dbAdapter.closeConnection();
     }
 
 

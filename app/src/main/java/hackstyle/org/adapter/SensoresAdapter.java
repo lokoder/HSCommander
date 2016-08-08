@@ -1,13 +1,17 @@
 package hackstyle.org.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.List;
@@ -28,6 +32,12 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
 
         this.context = context;
         this.listSensor = listSensor;
+    }
+
+    public void refresh(List<Sensor> listSensor) {
+
+        this.listSensor = listSensor;
+        notifyDataSetChanged();
     }
 
 
@@ -83,6 +93,32 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
             img.setImageURI(Uri.fromFile(imgFile));
         } else {
             img.setImageResource(R.drawable.selecione_imagem);
+        }
+
+        TextView txtNetState = (TextView)rowView.findViewById(R.id.txtNetState);
+        if (!s.isActive()) {
+
+            img.setImageResource(R.drawable.disconnected);
+            tvSensor.setTextColor(Color.RED);
+            tvAmbiente.setTextColor(Color.RED);
+            tvIP.setTextColor(Color.RED);
+            tvCarga1.setTextColor(Color.RED);
+            tvCarga2.setTextColor(Color.RED);
+            txtNetState.setTextColor(Color.RED);
+
+            txtNetState.setText("Offline");
+
+        } else {
+
+            txtNetState.setTextColor(Color.WHITE);
+            txtNetState.setText("Online");
+
+            tvSensor.setTextColor(Color.WHITE);
+            tvAmbiente.setTextColor(Color.WHITE);
+            tvIP.setTextColor(Color.WHITE);
+            tvCarga1.setTextColor(Color.WHITE);
+            tvCarga2.setTextColor(Color.WHITE);
+            txtNetState.setTextColor(Color.WHITE);
         }
 
         return rowView;

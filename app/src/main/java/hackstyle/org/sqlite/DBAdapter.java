@@ -12,7 +12,6 @@ import java.util.List;
 import hackstyle.org.dao.AmbienteDAO;
 import hackstyle.org.dao.CargaDAO;
 import hackstyle.org.dao.SensorDAO;
-import hackstyle.org.main.SensorSingleton;
 import hackstyle.org.pojo.Ambiente;
 import hackstyle.org.pojo.Carga;
 import hackstyle.org.pojo.Sensor;
@@ -281,21 +280,6 @@ public class DBAdapter {
     }
 
 
-    public void updateListSensorProd() {
-
-        List<Sensor> listSensor = new ArrayList<Sensor>(SensorSingleton.getInstance().getListSensorProd());
-
-        SensorSingleton.getInstance().eraseListSensorProd();
-
-        for (Sensor s : listSensor) {
-
-            Sensor sensor = getSensor(s.getId());
-            if (sensor != null) {
-                SensorSingleton.getInstance().addSensorProd(sensor);
-            }
-        }
-    }
-
 
     public void zeraDB() {
 
@@ -303,6 +287,12 @@ public class DBAdapter {
         database.delete("Carga", null, null);
         database.delete("Wifi", null, null);
         database.delete("Sensor", null, null);
+
+    }
+
+    public  void closeConnection() {
+
+        database.close();
     }
 
 }

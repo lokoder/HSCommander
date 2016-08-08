@@ -26,7 +26,6 @@ import java.net.SocketAddress;
 import java.util.List;
 
 import hackstyle.org.hscommander.R;
-import hackstyle.org.main.SensorSingleton;
 import hackstyle.org.pojo.Carga;
 import hackstyle.org.pojo.Sensor;
 

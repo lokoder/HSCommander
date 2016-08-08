@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,10 +22,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -37,6 +41,8 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import hackstyle.org.dao.SensorDAO;
 import hackstyle.org.hscommander.R;
@@ -57,6 +63,7 @@ public class DetalheSensorActivity extends AppCompatActivity {
     ImageView imageView;
     SensorCargasAdapter sensorCargasAdapter;
     ListView listViewCarga;
+    TextView txtResponse;
     int sensorId;
     Sensor sensor;
 
@@ -72,6 +79,23 @@ public class DetalheSensorActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("  " + "HSCommander");
 
         sensorId = getIntent().getIntExtra("id", -1);
+
+        final LinearLayout llResponse = (LinearLayout)findViewById(R.id.llResponse);
+        llResponse.setVisibility(View.INVISIBLE);
+
+        LinearLayout ll = (LinearLayout)findViewById(R.id.llSensorInfo);
+        ll.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                Intent i = new Intent(DetalheSensorActivity.this, ComandosGeraisActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("id", sensorId);
+                startActivity(i);
+
+                return true;
+            }
+        });
 
         imageView = (ImageView) findViewById(R.id.imageViewCarga);
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -104,18 +128,19 @@ public class DetalheSensorActivity extends AppCompatActivity {
 
         listViewCarga = (ListView) findViewById(R.id.listViewSensorCargas);
 
-        listViewCarga.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewCarga.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapter, View view, int position, long l) {
+            public boolean onItemLongClick(AdapterView<?> adapter, View view, int position, long l) {
 
                 Carga carga = (Carga) adapter.getItemAtPosition(position);
                 if (carga == null)
-                    return;
+                    return false;
 
                 Intent i = new Intent(DetalheSensorActivity.this, DetalheCargaActivity.class);
                 i.putExtra("id", carga.getId());
 
                 startActivity(i);
+                return true;
             }
         });
 
@@ -126,6 +151,9 @@ public class DetalheSensorActivity extends AppCompatActivity {
         txtNome.setText(sensor.getNome());
         txtAmbiente.setText(sensor.getAmbiente().getNome());
         txtIP.setText(sensor.getIp());
+
+        txtResponse= (TextView)findViewById(R.id.txtResponse);
+        txtResponse.setText("");
 
     }
 
@@ -187,8 +215,8 @@ public class DetalheSensorActivity extends AppCompatActivity {
                 break;
 
             case R.id.start_varredura:
-                i = new Intent(this, VarreduraSensoresActivity.class);
-                startActivity(i);
+                // i = new Intent(this, VarreduraSensoresActivity.class);
+                // startActivity(i);
                 break;
 
             case R.id.start_wificred:
@@ -324,10 +352,15 @@ public class DetalheSensorActivity extends AppCompatActivity {
                         buttonView.setText("Desligado");
 
                     String comando = isChecked? "1::::::" : "0::::::";
-                    SendCommand sendCommand= new SendCommand();
                     String sensorIP = carga.getSensor().getIp();
+
                     String message = "cmdexec:" + carga.getPino()+":" + comando;
-                    sendCommand.execute(sensorIP, message);
+                    SendCommand sendCommand= new SendCommand();
+                    //sendCommand.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    AsyncTaskCompat.executeParallel(sendCommand, sensorIP, message);
+                    //sendCommand.execute(sensorIP, message);
+
+                    Log.d(getClass().getName(), "enviado " + message + " para " + sensorIP);
                 }
             });
 
@@ -357,7 +390,7 @@ public class DetalheSensorActivity extends AppCompatActivity {
 
                 byte[] b = new byte[256];
 
-                sock.setSoTimeout(3000);
+                sock.setSoTimeout(6000);
                 int bytes = sock.getInputStream().read(b);
                 sock.close();
 
@@ -377,11 +410,64 @@ public class DetalheSensorActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
 
+            Log.e(getClass().getName(), "Entrou em PostExecute...");
+
+            ImageView imageView = (ImageView)findViewById(R.id.imageView2);
+
             if (result) {
-                //myHandler.sendEmptyMessage(1);
+
+                txtResponse.setTextColor(Color.WHITE);
+                txtResponse.setText("Comando executado com sucesso!");
+                imageView.setImageResource(R.drawable.success);
+
             } else {
-                //myHandler.sendEmptyMessage(0);
+
+                txtResponse.setTextColor(Color.RED);
+                txtResponse.setText("Houve um erro na execução do comando!");
+                imageView.setImageResource(R.drawable.error);
             }
+
+
+            final Animation alphaIn = new AlphaAnimation(0.0f,1.0f);
+            alphaIn.setDuration(1500);
+            alphaIn.setStartTime(0);
+
+            final LinearLayout ll = (LinearLayout)findViewById(R.id.llResponse);
+            ll.startAnimation(alphaIn);
+
+            alphaIn.setAnimationListener(new Animation.AnimationListener() {
+
+                @Override
+                public void onAnimationStart(Animation animation) {}
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+
+                    final Animation alphaOut = new AlphaAnimation(1.0f,0.0f);
+
+                    alphaOut.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {}
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+
+                            txtResponse.setText("");
+                            ll.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {}
+                    });
+
+                    alphaOut.setDuration(1500);
+                    ll.startAnimation(alphaOut);
+                }
+
+            });
+
         }
     }
 

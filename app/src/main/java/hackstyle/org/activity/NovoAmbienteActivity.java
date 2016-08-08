@@ -152,8 +152,8 @@ public class NovoAmbienteActivity extends AppCompatActivity {
                 break;
 
             case R.id.start_varredura:
-                i = new Intent(this, VarreduraSensoresActivity.class);
-                startActivity(i);
+                //i = new Intent(this, VarreduraSensoresActivity.class);
+                // startActivity(i);
                 break;
 
             case R.id.start_wificred:
