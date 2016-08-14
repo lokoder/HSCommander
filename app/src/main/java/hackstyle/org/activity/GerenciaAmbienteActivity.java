@@ -1,19 +1,12 @@
 package hackstyle.org.activity;
 
-import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.graphics.drawable.DrawableWrapper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,24 +14,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
 import java.util.List;
 
 import hackstyle.org.adapter.AmbienteAdapter;
 import hackstyle.org.dao.AmbienteDAO;
 import hackstyle.org.hscommander.R;
 import hackstyle.org.pojo.Ambiente;
-import hackstyle.org.sqlite.DBAdapter;
 
-public class NovoAmbienteActivity extends AppCompatActivity {
+public class GerenciaAmbienteActivity extends AppCompatActivity {
 
     Button btnInsert;
     ListView listView;
@@ -49,7 +37,7 @@ public class NovoAmbienteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_novo_ambiente);
+        setContentView(R.layout.activity_gerencia_ambiente);
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
         getSupportActionBar().setLogo(R.drawable.appiconbar);
@@ -66,7 +54,7 @@ public class NovoAmbienteActivity extends AppCompatActivity {
 
                 final int pos = position;
 
-                new AlertDialog.Builder(NovoAmbienteActivity.this)
+                new AlertDialog.Builder(GerenciaAmbienteActivity.this)
                         .setMessage("Remover o ambiente '" + listAmbiente.get(pos).getNome() + "' ?")
                         .setCancelable(false)
                         .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
@@ -78,10 +66,10 @@ public class NovoAmbienteActivity extends AppCompatActivity {
                                 if (pos >= listAmbiente.size())
                                     return;
 
-                                AmbienteDAO ambienteDAO = new AmbienteDAO(NovoAmbienteActivity.this);
+                                AmbienteDAO ambienteDAO = new AmbienteDAO(GerenciaAmbienteActivity.this);
                                 ambienteDAO.deleteAmbiente(listAmbiente.get(pos).getId());
 
-                                Toast.makeText(NovoAmbienteActivity.this, "Removendo o id " + listAmbiente.get(pos).getId(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(GerenciaAmbienteActivity.this, "Removendo o id " + listAmbiente.get(pos).getId(), Toast.LENGTH_LONG).show();
 
                                 connect_list();
                             }
@@ -142,7 +130,7 @@ public class NovoAmbienteActivity extends AppCompatActivity {
                 break;
 
             case R.id.start_ambiente:
-                i = new Intent(this, NovoAmbienteActivity.class);
+                i = new Intent(this, GerenciaAmbienteActivity.class);
                 startActivity(i);
                 break;
 
@@ -180,7 +168,7 @@ public class NovoAmbienteActivity extends AppCompatActivity {
 
         AmbienteDAO ambienteDAO = new AmbienteDAO(this);
         listAmbiente = ambienteDAO.getListAmbiente();
-        ambienteAdapter = new AmbienteAdapter(this, NovoAmbienteActivity.this, listAmbiente);
+        ambienteAdapter = new AmbienteAdapter(this, GerenciaAmbienteActivity.this, listAmbiente);
 
         if (listAmbiente != null)
             //this.setListAdapter(ambienteAdapter);

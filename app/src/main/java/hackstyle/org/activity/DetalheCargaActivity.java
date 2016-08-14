@@ -27,7 +27,6 @@ import java.io.File;
 
 import hackstyle.org.dao.CargaDAO;
 import hackstyle.org.hscommander.R;
-import hackstyle.org.pojo.Ambiente;
 import hackstyle.org.pojo.Carga;
 import hackstyle.org.sqlite.DBAdapter;
 
@@ -154,7 +153,7 @@ public class DetalheCargaActivity extends AppCompatActivity {
                 break;
 
             case R.id.start_ambiente:
-                i = new Intent(this, NovoAmbienteActivity.class);
+                i = new Intent(this, GerenciaAmbienteActivity.class);
                 startActivity(i);
                 break;
 

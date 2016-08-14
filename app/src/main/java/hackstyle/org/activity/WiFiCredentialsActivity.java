@@ -2,14 +2,10 @@ package hackstyle.org.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ButtonBarLayout;
 import android.text.InputType;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,8 +14,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import hackstyle.org.dao.WiFiCredentialsDAO;
@@ -137,7 +131,7 @@ public class WiFiCredentialsActivity extends AppCompatActivity {
                 break;
 
             case R.id.start_ambiente:
-                i = new Intent(this, NovoAmbienteActivity.class);
+                i = new Intent(this, GerenciaAmbienteActivity.class);
                 startActivity(i);
                 break;
 

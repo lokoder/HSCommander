@@ -1,24 +1,21 @@
 package hackstyle.org.activity;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
 import hackstyle.org.hscommander.R;
-import hackstyle.org.main.HSSensor;
 import hackstyle.org.service.SensorCollector;
 import hackstyle.org.sqlite.DBAdapter;
+import hackstyle.org.wizard.WizardActivity;
 
 public class IntroActivity extends AppCompatActivity {
 
@@ -28,15 +25,10 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-        getSupportActionBar().setLogo(R.drawable.appiconbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("  " + "HSCommander");
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        ImageView imageView = (ImageView)findViewById(R.id.imageViewIntro);
-        imageView.setImageResource(R.drawable.logo2);
-
+        /* serviço de scan */
         if (savedInstanceState == null) {
             Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SensorCollector.class);
             startService(intent);
@@ -54,12 +46,12 @@ public class IntroActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.start_novo_sensor:
-                i = new Intent(this, CheckNovoSensorActivity.class);
+                i = new Intent(this, WizardActivity.class);
                 startActivity(i);
                 break;
 
             case R.id.start_ambiente:
-                i = new Intent(this, NovoAmbienteActivity.class);
+                i = new Intent(this, GerenciaAmbienteActivity.class);
                 startActivity(i);
                 break;
 

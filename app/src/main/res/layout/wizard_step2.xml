@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:background="#3d72a4">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:id="@+id/imageView"
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selecione um nome"
+            android:id="@+id/txtHeader"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="0.3"
+        android:gravity="bottom|center">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:id="@+id/imageViewIntro"
+            android:alpha="0.8" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:layout_weight="0.4"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtIntroMessage"
+            android:gravity="center"
+            android:text="Escolha um nome para o sensor"
+            android:padding="10dp"
+            android:textSize="16dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtNomeSensor"
+            android:backgroundTint="#777777"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"></LinearLayout>
+
+</LinearLayout>

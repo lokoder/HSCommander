@@ -56,7 +56,8 @@ android:gravity="right"
         android:layout_height="wrap_content"
         android:id="@+id/edtNome"
         android:textColor="#ffffff"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:backgroundTint="#7c7c7c" />
 
     <TextView
         android:layout_width="match_parent"
@@ -67,12 +68,40 @@ android:gravity="right"
         android:layout_marginTop="10dp"
         android:textColor="#ffffff" />
 
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinAmbiente"
-        android:spinnerMode="dropdown" />
-</LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinAmbiente"
+            android:spinnerMode="dropdown"
+                android:layout_weight="0.7"
+                android:backgroundTint="#7c7c7c" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2">
+            </View>
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:id="@+id/btnAddAmbiente"
+                android:layout_weight="0.2"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:textColor="#ffffff"
+                android:backgroundTint="#000000"
+                android:gravity="center" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 <LinearLayout
     android:orientation="vertical"
@@ -125,21 +154,18 @@ android:gravity="right"
         android:layout_height="wrap_content" >
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:id="@+id/edtCarga1"
-            android:layout_weight="0.2"
             android:textColor="#ffffff"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:backgroundTint="#7c7c7c" />
 
-        <EditText
-            android:layout_width="match_parent"
+        <Spinner
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/edtPinoCarga1"
-            android:layout_weight="0.8"
-            android:inputType="numberDecimal"
-            android:textColor="#ffffff"
-            android:textStyle="bold" />
+            android:id="@+id/spinner" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -177,7 +203,8 @@ android:gravity="right"
             android:id="@+id/edtCarga2"
             android:layout_weight="0.2"
             android:textColor="#ffffff"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:backgroundTint="#7c7c7c" />
 
         <EditText
             android:layout_width="match_parent"
@@ -186,7 +213,8 @@ android:gravity="right"
             android:layout_weight="0.8"
             android:inputType="numberDecimal"
             android:textColor="#ffffff"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:backgroundTint="#a7a59b" />
     </LinearLayout>
 
 </LinearLayout>

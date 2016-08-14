@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/llPopupNovoSensor"
+    android:background="#6e6a6a">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Um sensor não-configurado foi encontrado em 192.168.1.2"
+        android:id="@+id/textView7"
+        android:layout_margin="20dp"
+        android:textStyle="bold"
+        android:textSize="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Na tela a seguir, você deve configurá-lo, indicando um nome, ambiente e os aparelhos que serão conectados a ele"
+        android:id="@+id/textView8"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+</LinearLayout>

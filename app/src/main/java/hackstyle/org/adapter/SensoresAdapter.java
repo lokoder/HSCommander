@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.List;
 
 import hackstyle.org.hscommander.R;
+import hackstyle.org.main.HSSensor;
 import hackstyle.org.pojo.Carga;
 import hackstyle.org.pojo.Sensor;
 
@@ -106,19 +107,22 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
             tvCarga2.setTextColor(Color.RED);
             txtNetState.setTextColor(Color.RED);
 
-            txtNetState.setText("Offline");
+            if (HSSensor.getInstance().isScanning())
+                txtNetState.setText("Procurando...");
+            else
+                txtNetState.setText("Offline");
 
         } else {
 
-            txtNetState.setTextColor(Color.WHITE);
+            txtNetState.setTextColor(Color.BLACK);
             txtNetState.setText("Online");
 
-            tvSensor.setTextColor(Color.WHITE);
-            tvAmbiente.setTextColor(Color.WHITE);
-            tvIP.setTextColor(Color.WHITE);
-            tvCarga1.setTextColor(Color.WHITE);
-            tvCarga2.setTextColor(Color.WHITE);
-            txtNetState.setTextColor(Color.WHITE);
+            tvSensor.setTextColor(Color.BLACK);
+            tvAmbiente.setTextColor(Color.BLACK);
+            tvIP.setTextColor(Color.BLACK);
+            tvCarga1.setTextColor(Color.BLACK);
+            tvCarga2.setTextColor(Color.BLACK);
+            txtNetState.setTextColor(Color.BLACK);
         }
 
         return rowView;

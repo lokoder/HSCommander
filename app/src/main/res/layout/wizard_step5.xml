@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:background="#3d72a4">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:id="@+id/imageView"
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="20dp"
+            android:clickable="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Configure o acesso à rede"
+            android:id="@+id/txtHeader"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="0.3"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:gravity="bottom|center">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:id="@+id/imageViewIntro"
+            android:alpha="0.8" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:layout_weight="0.4"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtIntroMessage"
+            android:gravity="center"
+            android:padding="10dp"
+            android:layout_weight="0.2"
+            android:textSize="16dp"
+            android:text="Informe as credenciais de acesso à sua rede WiFi" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome da rede (SSID)"
+            android:id="@+id/txtSSID"
+            android:layout_gravity="left"
+            android:layout_marginTop="15dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtSSID"
+            android:backgroundTint="#777777"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Senha"
+            android:id="@+id/txtSenha"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtSenha"
+            android:backgroundTint="#777777"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"></LinearLayout>
+
+</LinearLayout>

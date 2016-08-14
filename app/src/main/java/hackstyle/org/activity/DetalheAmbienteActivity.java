@@ -8,9 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -25,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.net.URI;
 
 import hackstyle.org.hscommander.R;
 import hackstyle.org.pojo.Ambiente;
@@ -157,7 +154,7 @@ public class DetalheAmbienteActivity extends AppCompatActivity {
                 break;
 
             case R.id.start_ambiente:
-                i = new Intent(this, NovoAmbienteActivity.class);
+                i = new Intent(this, GerenciaAmbienteActivity.class);
                 startActivity(i);
                 break;
 

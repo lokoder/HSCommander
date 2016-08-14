@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:background="#3d72a4">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:id="@+id/imageView"
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Concluído!"
+            android:id="@+id/txtHeader"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"></LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.6"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TableRow android:layout_margin="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Nome :"
+                android:id="@+id/txt1"
+                android:layout_weight="0.5"
+                android:gravity="right"
+                android:textSize="16dp"
+                android:paddingRight="5dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtNomeSensor"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:paddingLeft="5dp" />
+        </TableRow>
+
+
+        <TableRow android:layout_margin="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Ambiente :"
+                android:id="@+id/txt2"
+                android:layout_weight="0.5"
+                android:gravity="right"
+                android:textSize="16dp"
+                android:paddingRight="5dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtAmbienteSensor"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:paddingLeft="5dp" />
+        </TableRow>
+
+
+        <TableRow android:layout_margin="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Saída 1 :"
+                android:id="@+id/txt3"
+                android:layout_weight="0.5"
+                android:gravity="right"
+                android:textSize="16dp"
+                android:paddingRight="5dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtSaida1Sensor"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:paddingLeft="5dp" />
+        </TableRow>
+
+
+        <TableRow android:layout_margin="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Saída 2 :"
+                android:id="@+id/txt4"
+                android:layout_weight="0.5"
+                android:gravity="right"
+                android:textSize="16dp"
+                android:paddingRight="5dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtSaida2Sensor"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:paddingLeft="5dp" />
+        </TableRow>
+
+
+        <TableRow android:layout_margin="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="SSID :"
+                android:id="@+id/txt5"
+                android:layout_weight="0.5"
+                android:gravity="right"
+                android:textSize="16dp"
+                android:paddingRight="5dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtSSIDSensor"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:paddingLeft="5dp" />
+        </TableRow>
+
+
+        <TableRow android:layout_margin="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Senha :"
+                android:id="@+id/txt6"
+                android:layout_weight="0.5"
+                android:gravity="right"
+                android:textSize="16dp"
+                android:paddingRight="5dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtSenhaSensor"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:paddingLeft="5dp" />
+        </TableRow>
+
+    </TableLayout>
+
+
+</LinearLayout>

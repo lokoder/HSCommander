@@ -41,7 +41,6 @@ public class DBHelper extends SQLiteOpenHelper {
         String tb_ambiente = "CREATE TABLE Ambiente (" +
                 "id integer not null primary key autoincrement, " +
                 "nome varchar(32) not null, " +
-                "icone integer," +
                 "image_path varchar(128) DEFAULT '')";
 
         String tb_wifi = "CREATE TABLE wifi (" +
@@ -63,6 +62,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS Ambiente");
         db.execSQL("DROP TABLE IF EXISTS Wifi");
 
+        db.execSQL("INSERT INTO Ambiente (id, nome) VALUES (1, 'Nenhum')");
         onCreate(db);
     }
 

@@ -41,8 +41,6 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import hackstyle.org.dao.SensorDAO;
 import hackstyle.org.hscommander.R;
@@ -205,7 +203,7 @@ public class DetalheSensorActivity extends AppCompatActivity {
                 break;
 
             case R.id.start_ambiente:
-                i = new Intent(this, NovoAmbienteActivity.class);
+                i = new Intent(this, GerenciaAmbienteActivity.class);
                 startActivity(i);
                 break;
 

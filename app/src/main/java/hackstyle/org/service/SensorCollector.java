@@ -47,11 +47,20 @@ public class SensorCollector extends IntentService {
                 sensorDAO = new SensorDAO(getApplicationContext());
                 listSensorDB = sensorDAO.getListSensor();
 
-                int foundSensors = checkRegisteredSensors();
-                if (foundSensors < listSensorDB.size())
-                    checkLostSensors();
+                for (int i=0; i<2; i++) {
 
-                //SSensor.getInstance().setListSensorOn(listSensorDB);
+                    int foundSensors = checkRegisteredSensors();
+
+                    if (foundSensors < listSensorDB.size()) {
+
+                        int foundLost = checkLostSensors();
+
+                        if ((foundSensors + foundLost) == listSensorDB.size()) { //encontrou todos os sensores cadastrados...
+                            break;
+                        }
+                    }
+                }
+
                 HSSensor.getInstance().setScanning(false);
 
                 Log.d(getClass().getName(), "fim do serviço");
@@ -138,11 +147,12 @@ public class SensorCollector extends IntentService {
             }
 
 
-            private void checkLostSensors() {
+            private int checkLostSensors() {
 
                 WiFiUtil wiFiUtil = new WiFiUtil(getApplicationContext());
                 String subnet = wiFiUtil.getNetworkAddress();
                 boolean configured = false;
+                int counterFoundSensor=0;
 
                 for (int i=2;i<255;i++) {
 
@@ -188,6 +198,7 @@ public class SensorCollector extends IntentService {
                                     sensor.setIp(host);
                                     sensorDAO.updateIP(sensor);
                                     configured = true;
+                                    counterFoundSensor++;
                                 }
                             }
                         }
@@ -210,6 +221,7 @@ public class SensorCollector extends IntentService {
                     }
                 }
 
+                return counterFoundSensor;
             }
 
 
@@ -284,7 +296,7 @@ public class SensorCollector extends IntentService {
         };
 
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-        executorService.scheduleAtFixedRate(runnable, 0, 30, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(runnable, 0, 60, TimeUnit.SECONDS);
     }
 
 }

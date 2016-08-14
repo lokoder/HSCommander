@@ -5,15 +5,18 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import hackstyle.org.adapter.SensoresAdapter;
@@ -25,7 +28,6 @@ public class SensoresActivity extends AppCompatActivity {
 
     TextView txtStatus;
     ListView listView;
-    ProgressBar progressBar;
     SensoresAdapter sensoresAdapter;
     SensoresUpdater sensoresUpdater;
 
@@ -35,16 +37,19 @@ public class SensoresActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensores);
 
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-        getSupportActionBar().setLogo(R.drawable.appiconbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("  " + "Sensores");
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
 
+        setSupportActionBar(toolbar);
+
+        //ActionBar actionBar = getSupportActionBar();
+        //actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ImageView imageView = (ImageView)findViewById(R.id.imageViewAddSensor);
+        imageView.setImageResource(R.drawable.add);
 
         txtStatus = (TextView)findViewById(R.id.txtStatus);
         listView = (ListView)findViewById(android.R.id.list);
-        progressBar = (ProgressBar)findViewById(R.id.progressBarSensores);
 
         /*if (HSSensor.getInstance().getListSensorOn().size() < 1) {
 
@@ -67,7 +72,12 @@ public class SensoresActivity extends AppCompatActivity {
             connect_list();
         }
 */
-        connect_list();
+
+        sensoresAdapter = new SensoresAdapter(this, HSSensor.getInstance().getListSensorOn());
+        if (sensoresAdapter != null)
+            listView.setAdapter(sensoresAdapter);
+
+        updateStatusSensors();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -123,13 +133,20 @@ public class SensoresActivity extends AppCompatActivity {
                 break;
 
             case R.id.start_ambiente:
-                i = new Intent(this, NovoAmbienteActivity.class);
+                i = new Intent(this, GerenciaAmbienteActivity.class);
                 startActivity(i);
                 break;
 
             case R.id.start_wificred:
                 i = new Intent(this, WiFiCredentialsActivity.class);
                 startActivity(i);
+                break;
+
+            case android.R.id.home:
+
+                Intent homeIntent = new Intent(this, IntroActivity.class);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
                 break;
         }
 
@@ -147,11 +164,7 @@ public class SensoresActivity extends AppCompatActivity {
     }
 
 
-    private void connect_list() {
-
-        sensoresAdapter = new SensoresAdapter(this, HSSensor.getInstance().getListSensorOn());
-        if (sensoresAdapter != null)
-            listView.setAdapter(sensoresAdapter);
+    private void updateStatusSensors() {
 
         String message= null;
 
@@ -165,7 +178,7 @@ public class SensoresActivity extends AppCompatActivity {
         else if (countOnline == 1)
             message = "1 sensor ativo";
         else if (countOnline > 1)
-                message = sensoresAdapter.getCount() + " sensores ativos";
+                message = countOnline + " sensores ativos";
 
         txtStatus.setText(message);
 
@@ -184,15 +197,6 @@ public class SensoresActivity extends AppCompatActivity {
         notificationManager.notify(0, notification);
         */
     }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //connect_list();
-    }
-
-
 
 
     private class SensoresUpdater extends AsyncTask<Boolean, Boolean, Boolean> {
@@ -226,16 +230,17 @@ public class SensoresActivity extends AppCompatActivity {
         protected void onProgressUpdate(Boolean... values) {
             super.onProgressUpdate(values);
 
-            if (values[0]) {
+            /*if (values[0]) {
 
                 progressBar.setVisibility(View.VISIBLE);
 
             } else {
 
                 progressBar.setVisibility(View.GONE);
-            }
+            }*/
 
             sensoresAdapter.refresh(HSSensor.getInstance().getListSensorOn());
+            updateStatusSensors();
         }
 
     }

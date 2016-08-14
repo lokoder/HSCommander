@@ -5,18 +5,21 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +44,7 @@ public class NovoSensorActivity extends AppCompatActivity {
     Spinner spin;
     EditText edtNome, edtCarga1, edtCarga2;
     EditText edtPinoCarga1, edtPinoCarga2;
-    Button btnInsert;
+    Button btnInsert, btnNovoAmbiente;
     TextView txtIP;
     String sensorIP;
 
@@ -63,7 +66,7 @@ public class NovoSensorActivity extends AppCompatActivity {
         edtNome = (EditText)findViewById(R.id.edtNome);
         edtCarga1 = (EditText)findViewById(R.id.edtCarga1);
         edtCarga2 = (EditText)findViewById(R.id.edtCarga2);
-        edtPinoCarga1 = (EditText)findViewById(R.id.edtPinoCarga1);
+        //edtPinoCarga1 = (EditText)findViewById(R.id.edtPinoCarga1);
         edtPinoCarga2 = (EditText)findViewById(R.id.edtPinoCarga2);
         txtIP = (TextView)findViewById(R.id.txtIP);
 
@@ -79,6 +82,9 @@ public class NovoSensorActivity extends AppCompatActivity {
                 arrAmbiente[i] = listAmbiente.get(i);
 
             ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, arrAmbiente);
+            //ArrayAdapter adapter = new ArrayAdapter(this, R.layout.spinner_item, ls);
+           // ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, arrAmbiente);
+            //adapter.setDropDownViewResource(R.layout.spinner_item);
             spin.setAdapter(adapter);
         }
 
@@ -190,10 +196,49 @@ public class NovoSensorActivity extends AppCompatActivity {
         });//onclick
 
 
+        btnNovoAmbiente = (Button)findViewById(R.id.btnAddAmbiente);
+        btnNovoAmbiente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final PopupWindow mpopup;
+                final View popUpView = getLayoutInflater().inflate(R.layout.popup_novo_ambiente,
+                        null); // inflating popup layout
+                mpopup = new PopupWindow(popUpView, LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT, true); // Creation of popup
+                mpopup.setAnimationStyle(android.R.style.Animation_Dialog);
+                mpopup.showAtLocation(popUpView, Gravity.CENTER, 0, 0); // Displaying popup
+
+                Button btnInsertAmbiente = (Button)popUpView.findViewById(R.id.btnInsertAmbiente);
+                btnInsertAmbiente.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        mpopup.dismiss();
+                    }
+                });
+
+            }
+        });
+
         sensorIP = getIntent().getStringExtra("sensorIP");
         txtIP.setText("Novo sensor encontrado em " + sensorIP);
 
+
+        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
+
 
 
 
@@ -211,7 +256,7 @@ public class NovoSensorActivity extends AppCompatActivity {
                 break;
 
             case R.id.start_ambiente:
-                i = new Intent(this, NovoAmbienteActivity.class);
+                i = new Intent(this, GerenciaAmbienteActivity.class);
                 startActivity(i);
                 break;
 
