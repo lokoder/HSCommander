@@ -31,7 +31,6 @@
             android:layout_toRightOf="@+id/imageViewCarga"
             android:layout_toEndOf="@+id/imageViewCarga"
             android:layout_marginTop="35dp"
-            android:textColor="#ffffff"
             android:textStyle="bold" />
 
         <View
@@ -42,18 +41,15 @@
 
         <Switch
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="Desligado"
             android:id="@+id/switchEstado"
             android:layout_alignBottom="@+id/imageViewCarga"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="35dp"
-            android:gravity="right"
-            android:focusable="false"
-            android:textStyle="bold"
-            android:textColor="#ffffff" />
+            android:gravity="center|right"
+            android:focusable="false" />
     </LinearLayout>
 
 </LinearLayout>

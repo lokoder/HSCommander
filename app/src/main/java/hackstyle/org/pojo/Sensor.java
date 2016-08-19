@@ -16,6 +16,9 @@ public class Sensor {
     private String imagePath;
     private List<Carga> listCarga;
     private boolean isActive;
+    private String ssid;
+    private String senha;
+
 
     public Sensor() {
 
@@ -28,6 +31,8 @@ public class Sensor {
         this.porta = 8000;
         this.imagePath = "";
         isActive = false;
+        this.ssid = "";
+        this.senha = "";
     }
 
 
@@ -135,6 +140,22 @@ public class Sensor {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public String getSSID() {
+        return ssid;
+    }
+
+    public void setSSID(String SSID) {
+        this.ssid = SSID;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
 

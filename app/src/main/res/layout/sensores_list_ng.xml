@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.65"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:id="@+id/imageView"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvSensor"
+            android:text="Sensor..."
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:layout_toRightOf="@id/imageView"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cozinha"
+            android:id="@+id/tvAmbiente"
+            android:layout_toRightOf="@id/imageView"
+            android:layout_below="@id/tvSensor"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="2dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ip"
+            android:id="@+id/tvIP"
+            android:textSize="11dp"
+            android:layout_toRightOf="@id/imageView"
+            android:layout_below="@id/tvAmbiente"
+            android:layout_marginLeft="30dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.35"
+        android:orientation="vertical"
+        android:id="@+id/layoutCargas">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:gravity="bottom"
+            android:paddingLeft="20dp">
+
+            <ImageView
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:id="@+id/imageViewC1"
+                android:src="@drawable/on"
+                android:layout_marginBottom="3dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="c1"
+                android:id="@+id/tvCarga1"
+                android:textSize="12dp"
+                android:layout_marginLeft="5dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:gravity="top"
+            android:paddingLeft="20dp">
+
+            <ImageView
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:id="@+id/imageViewC2"
+                android:src="@drawable/off"
+                android:layout_marginTop="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="c2"
+                android:id="@+id/tvCarga2"
+                android:textSize="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="connstate"
+            android:id="@+id/txtNetState"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:paddingRight="20dp"
+            android:paddingBottom="5dp" />
+    </LinearLayout>
+
+</LinearLayout>

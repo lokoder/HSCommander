@@ -1,5 +1,6 @@
 package hackstyle.org.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
@@ -7,20 +8,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import hackstyle.org.activity.CheckNovoSensorActivity;
+import hackstyle.org.dao.SensorDAO;
 import hackstyle.org.hscommander.R;
 import hackstyle.org.main.HSSensor;
 import hackstyle.org.pojo.Carga;
 import hackstyle.org.pojo.Sensor;
-
 
 public class SensoresAdapter extends ArrayAdapter<Sensor> {
 
@@ -42,13 +47,13 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
     }
 
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView;
+        final View rowView;
 
         if (convertView == null) {
-            rowView = inflater.inflate(R.layout.sensores_list, parent, false);
+            rowView = inflater.inflate(R.layout.sensores_list_ng, parent, false);
         } else {
             rowView = convertView;
         }
@@ -58,6 +63,15 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
         TextView tvAmbiente = (TextView)rowView.findViewById(R.id.tvAmbiente);
         TextView tvCarga1 = (TextView)rowView.findViewById(R.id.tvCarga1);
         TextView tvCarga2 = (TextView)rowView.findViewById(R.id.tvCarga2);
+        ImageView imgC1 = (ImageView)rowView.findViewById(R.id.imageViewC1);
+        ImageView imgC2 = (ImageView)rowView.findViewById(R.id.imageViewC2);
+
+
+        /*tvSensor.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Simply Rounded.ttf"));
+        tvIP.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Simply Rounded.ttf"));
+        tvAmbiente.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Simply Rounded.ttf"));
+        tvCarga1.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Simply Rounded.ttf"));
+        tvCarga2.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Simply Rounded.ttf"));*/
 
         if (listSensor == null)
             return null;
@@ -75,16 +89,22 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
         tvAmbiente.setText(s.getAmbiente().getNome());
 
         Carga carga = s.getCarga(0);
-        if (carga != null)
-            tvCarga1.setText("Carga 1:  " + carga.getNome());
-        else
+        if (carga != null) {
+            tvCarga1.setText(carga.getNome());
+            imgC1.setImageResource(R.drawable.on);
+        } else {
             tvCarga1.setText("");
+            imgC1.setImageResource(0);
+        }
 
         carga = s.getCarga(1);
-        if (carga != null)
-            tvCarga2.setText("Carga 2:  " + carga.getNome());
-        else
+        if (carga != null) {
+            tvCarga2.setText(carga.getNome());
+            imgC2.setImageResource(R.drawable.on);
+        } else {
             tvCarga2.setText("");
+            imgC2.setImageResource(0);
+        }
 
 
         ImageView img = (ImageView)rowView.findViewById(R.id.imageView);
@@ -119,11 +139,86 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
 
             tvSensor.setTextColor(Color.BLACK);
             tvAmbiente.setTextColor(Color.BLACK);
-            tvIP.setTextColor(Color.BLACK);
+            tvIP.setTextColor(Color.parseColor("#FFA0A0A0"));
             tvCarga1.setTextColor(Color.BLACK);
             tvCarga2.setTextColor(Color.BLACK);
-            txtNetState.setTextColor(Color.BLACK);
+            txtNetState.setText("");
         }
+
+        LinearLayout layout = (LinearLayout)rowView.findViewById(R.id.layoutCargas);
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.popup_sensor_cargas);
+                //dialog.setCancelable(false);
+
+                ListView listView = (ListView)dialog.findViewById(R.id.listView);
+                TextView txtHeader = (TextView)dialog.findViewById(R.id.txtHeader);
+
+
+                SensorDAO sensorDAO = new SensorDAO(context);
+                Sensor sensor = sensorDAO.getSensor(listSensor.get(position).getId());
+
+                txtHeader.setText(sensor.getNome());
+                //TextView txtSensorName = (TextView)dialog.findViewById(R.id.txtSensorName);
+                //txtSensorName.setText(sensor.getNome());
+
+                List<Carga> listCarga = new ArrayList<Carga>();
+
+                for (int i = 0; i < 2; i++) {
+
+                    Carga c = sensor.getCarga(i);
+                    if (c != null)
+                        listCarga.add(c);
+                }
+
+                SensorCargasAdapter sensorCargasAdapter = new SensorCargasAdapter(context, listCarga);
+                listView.setAdapter(sensorCargasAdapter);
+
+
+
+
+                final RelativeLayout rl = (RelativeLayout)dialog.findViewById(R.id.layoutFastOptions);
+                rl.setVisibility(View.INVISIBLE);
+                rl.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+
+                final ImageView imageViewMenu = (ImageView)dialog.findViewById(R.id.imageViewMenu);
+                imageViewMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if (rl.getVisibility() == View.INVISIBLE) {
+                            rl.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                            rl.setVisibility(View.VISIBLE);
+                        } else {
+                            rl.setVisibility(View.INVISIBLE);
+                            rl.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+                        }
+                    }
+                });
+
+                ImageView imageViewClose = (ImageView)dialog.findViewById(R.id.imageViewClose);
+                imageViewClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+                CheckBox checkBox = (CheckBox)dialog.findViewById(R.id.checkBoxFecharAutomaticamente);
+                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+
+                    }
+                });
+
+                dialog.show();
+
+            }
+        });
 
         return rowView;
     }

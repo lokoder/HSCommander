@@ -3,15 +3,21 @@ package hackstyle.org.wizard;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import hackstyle.org.hscommander.R;
 
 public class Tela5 extends Fragment {
+
+    EditText edtSSID, edtSenha;
 
     public Tela5() {}
 
@@ -35,16 +41,48 @@ public class Tela5 extends Fragment {
         TextView txtSenha = (TextView) v.findViewById(R.id.txtSenha);
         txtSenha.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Simply Rounded.ttf"));
 
-        //EditText edtAparelho1 = (EditText)v.findViewById(R.id.edtAparelho1);
-        //edtAparelho1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Simply Rounded.ttf"));
-
-        //EditText edtAparelho2 = (EditText)v.findViewById(R.id.edtAparelho2);
-        //edtAparelho2.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Simply Rounded.ttf"));
+        edtSSID = (EditText) v.findViewById(R.id.edtSSID);
+        edtSenha = (EditText) v.findViewById(R.id.edtSenha);
 
         ImageView imageViewIntro = (ImageView)v.findViewById(R.id.imageViewIntro);
         imageViewIntro.setImageResource(R.drawable.signalxxl);
 
+        edtSSID.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String ssid = charSequence.toString();
+                WizardSensor.getInstance().getSensor().setSSID(ssid);
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        edtSenha.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String senha = charSequence.toString();
+                WizardSensor.getInstance().getSensor().setSenha(senha);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
         return v;
     }
 
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (!isVisibleToUser) {
+            Log.d("MyFragment", "Tela 5 Not visible anymore.  Stopping audio.");
+        }
+    }
 }

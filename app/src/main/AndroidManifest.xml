@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +17,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="hackstyle.org.activity.IntroActivity" android:parentActivityName="hackstyle.org.activity.GerenciaAmbienteActivity">
+
+        <activity android:name="hackstyle.org.activity.IntroActivity" android:logo="@drawable/house">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,9 +39,16 @@
 
         <activity android:name="hackstyle.org.activity.CheckNovoSensorActivity" />
         <activity android:name="hackstyle.org.activity.DetalheAmbienteActivity" />
+
         <activity
             android:name="hackstyle.org.activity.DetalheSensorActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" android:parentActivityName="hackstyle.org.activity.SensoresActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="hackstyle.org.activity.SensoresActivity">
+            </meta-data>
+        </activity>
+
         <activity android:name="hackstyle.org.activity.DetalheCargaActivity" />
         <activity
             android:name="hackstyle.org.activity.GerenciaAmbienteActivity"

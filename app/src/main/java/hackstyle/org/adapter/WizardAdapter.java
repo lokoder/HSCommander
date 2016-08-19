@@ -41,7 +41,6 @@ public class WizardAdapter extends FragmentPagerAdapter {
 
             case 5:
                 return  new Tela6();
-
         }
 
         return null;

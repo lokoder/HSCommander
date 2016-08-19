@@ -3,6 +3,7 @@ package hackstyle.org.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.support.v4.app.NavUtils;
@@ -18,6 +19,8 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.lang.reflect.Field;
 
 import hackstyle.org.adapter.SensoresAdapter;
 import hackstyle.org.hscommander.R;
@@ -38,12 +41,15 @@ public class SensoresActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sensores);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
 
         //ActionBar actionBar = getSupportActionBar();
         //actionBar.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Sensores");
+
+        setToolbarConfig(toolbar);
+
 
         ImageView imageView = (ImageView)findViewById(R.id.imageViewAddSensor);
         imageView.setImageResource(R.drawable.add);
@@ -114,6 +120,25 @@ public class SensoresActivity extends AppCompatActivity {
     }
 
 
+
+    private void setToolbarConfig(Toolbar toolbar) {
+
+        try {
+
+            Field f = toolbar.getClass().getDeclaredField("mTitleTextView");
+            f.setAccessible(true);
+
+            TextView mToolbarTitleTextView = (TextView)f.get(toolbar);
+            mToolbarTitleTextView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/HighlandGothicFLF.ttf"));
+
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void OnDestroy() {
         super.onDestroy();
         sensoresUpdater.cancel(true);
@@ -123,24 +148,8 @@ public class SensoresActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         super.onOptionsItemSelected(item);
-        Intent i = null;
 
         switch (item.getItemId()) {
-
-            case R.id.start_novo_sensor:
-                i = new Intent(this, CheckNovoSensorActivity.class);
-                startActivity(i);
-                break;
-
-            case R.id.start_ambiente:
-                i = new Intent(this, GerenciaAmbienteActivity.class);
-                startActivity(i);
-                break;
-
-            case R.id.start_wificred:
-                i = new Intent(this, WiFiCredentialsActivity.class);
-                startActivity(i);
-                break;
 
             case android.R.id.home:
 
@@ -159,7 +168,7 @@ public class SensoresActivity extends AppCompatActivity {
         super.onCreateOptionsMenu(menu);
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.menu_sensores, menu);
         return true;
     }
 

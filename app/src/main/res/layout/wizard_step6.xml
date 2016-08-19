@@ -38,7 +38,21 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.2"></LinearLayout>
+        android:layout_weight="0.2"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtIntroMessage"
+            android:gravity="center"
+            android:padding="10dp"
+            android:layout_weight="0.2"
+            android:textSize="16dp"
+            android:text="Clique em Finalizar para concluir a configuração do sensor"
+            android:allowUndo="false" />
+    </LinearLayout>
 
     <TableLayout
         android:layout_width="match_parent"
@@ -66,8 +80,9 @@
                 android:id="@+id/txtNomeSensor"
                 android:layout_weight="0.5"
                 android:gravity="left"
-                android:textStyle="bold"
-                android:paddingLeft="5dp" />
+                android:paddingLeft="5dp"
+                android:textSize="16dp"
+                android:textColor="#524848" />
         </TableRow>
 
 
@@ -90,8 +105,9 @@
                 android:id="@+id/txtAmbienteSensor"
                 android:layout_weight="0.5"
                 android:gravity="left"
-                android:textStyle="bold"
-                android:paddingLeft="5dp" />
+                android:paddingLeft="5dp"
+                android:textSize="16dp"
+                android:textColor="#524848" />
         </TableRow>
 
 
@@ -114,8 +130,9 @@
                 android:id="@+id/txtSaida1Sensor"
                 android:layout_weight="0.5"
                 android:gravity="left"
-                android:textStyle="bold"
-                android:paddingLeft="5dp" />
+                android:paddingLeft="5dp"
+                android:textSize="16dp"
+                android:textColor="#524848" />
         </TableRow>
 
 
@@ -138,8 +155,9 @@
                 android:id="@+id/txtSaida2Sensor"
                 android:layout_weight="0.5"
                 android:gravity="left"
-                android:textStyle="bold"
-                android:paddingLeft="5dp" />
+                android:paddingLeft="5dp"
+                android:textSize="16dp"
+                android:textColor="#524848" />
         </TableRow>
 
 
@@ -162,8 +180,9 @@
                 android:id="@+id/txtSSIDSensor"
                 android:layout_weight="0.5"
                 android:gravity="left"
-                android:textStyle="bold"
-                android:paddingLeft="5dp" />
+                android:paddingLeft="5dp"
+                android:textSize="16dp"
+                android:textColor="#524848" />
         </TableRow>
 
 
@@ -186,8 +205,9 @@
                 android:id="@+id/txtSenhaSensor"
                 android:layout_weight="0.5"
                 android:gravity="left"
-                android:textStyle="bold"
-                android:paddingLeft="5dp" />
+                android:paddingLeft="5dp"
+                android:textSize="16dp"
+                android:textColor="#524848" />
         </TableRow>
 
     </TableLayout>
