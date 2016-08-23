@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -30,7 +31,9 @@
             android:name="hackstyle.org.activity.VarreduraSensoresActivity"
             android:noHistory="true" />
         <activity android:name="hackstyle.org.main.HSCommander" />
-        <activity android:name="hackstyle.org.activity.SensoresActivity" android:parentActivityName="hackstyle.org.activity.IntroActivity">
+        <activity android:name="hackstyle.org.activity.SensoresActivity"
+            android:parentActivityName="hackstyle.org.activity.IntroActivity"
+            android:noHistory="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="hackstyle.org.activity.IntroActivity">

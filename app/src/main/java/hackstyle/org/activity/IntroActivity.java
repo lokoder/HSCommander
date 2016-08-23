@@ -1,5 +1,9 @@
 package hackstyle.org.activity;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +15,7 @@ import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -36,8 +41,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,10 +95,10 @@ public class IntroActivity extends AppCompatActivity {
         imageView.setImageResource(R.drawable.infoxxl);
 
         /* serviço de scan */
-        /*if (savedInstanceState == null) {
+        if (savedInstanceState == null) {
             Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SensorCollector.class);
             startService(intent);
-        }*/
+        }
 
         imageViewCamera = (ImageView)findViewById(R.id.imageViewCamera);
         downloadImageTask = new DownloadImageTask(imageViewCamera);
@@ -143,8 +146,11 @@ public class IntroActivity extends AppCompatActivity {
             }
 
 
-
         });
+
+
+        //if (savedInstanceState == null)
+        //    HSDialog.newInstance(this, "tttt", "zzzz", false).show(getFragmentManager(), "");
 
     }
 
@@ -322,6 +328,59 @@ public class IntroActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+        }
+    }
+
+
+
+    public static class HSDialog extends DialogFragment {
+
+        private static Context context;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            super.onCreateDialog(savedInstanceState);
+
+            Bundle args = getArguments();
+
+            String title = args.getString("title");
+            String message = args.getString("message");
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(message)
+                    .setTitle(title)
+                    .setPositiveButton("sim", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            Toast.makeText(context, "AAAAAAAAAAAAAAAAhhhhh!!!!", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton("nao", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            dialog.dismiss();
+                        }
+                    });
+
+            return builder.create();
+        }
+
+
+        public static HSDialog newInstance(Context context, String title, String message, boolean cancelable) {
+
+            HSDialog frag = new HSDialog();
+            Bundle args = new Bundle();
+
+
+            HSDialog.context = context;
+
+            args.putString("title", title);
+            args.putString("message", message);
+
+            frag.setCancelable(cancelable);
+            frag.setArguments(args);
+            return frag;
         }
     }
 

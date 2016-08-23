@@ -1,7 +1,12 @@
 package hackstyle.org.service;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.IntentService;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import java.io.PrintWriter;
@@ -114,7 +119,7 @@ public class SensorCollector extends IntentService {
                         sock.close();
 
                         String result = new String(b, 0, bytes - 1);
-                        Log.d(getClass().getName(), "Recebida resposta de " + sensor.getIp() + "para nosso getinfo::::::::");
+                        Log.d(getClass().getName(), "Recebida resposta de " + sensor.getIp() + " para nosso getinfo::::::::");
 
                         Sensor tmpSensor = buildSensorFromGetInfo(result);
                         if (tmpSensor == null) {
@@ -299,4 +304,6 @@ public class SensorCollector extends IntentService {
         executorService.scheduleAtFixedRate(runnable, 0, 60, TimeUnit.SECONDS);
     }
 
+
 }
+

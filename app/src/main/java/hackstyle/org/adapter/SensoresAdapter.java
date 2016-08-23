@@ -1,6 +1,7 @@
 package hackstyle.org.adapter;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -59,12 +61,13 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
         }
 
         TextView tvSensor = (TextView)rowView.findViewById(R.id.tvSensor);
-        TextView tvIP = (TextView)rowView.findViewById(R.id.tvIP);
+        //TextView tvIP = (TextView)rowView.findViewById(R.id.tvIP);
         TextView tvAmbiente = (TextView)rowView.findViewById(R.id.tvAmbiente);
         TextView tvCarga1 = (TextView)rowView.findViewById(R.id.tvCarga1);
         TextView tvCarga2 = (TextView)rowView.findViewById(R.id.tvCarga2);
         ImageView imgC1 = (ImageView)rowView.findViewById(R.id.imageViewC1);
         ImageView imgC2 = (ImageView)rowView.findViewById(R.id.imageViewC2);
+        ProgressBar progressBar = (ProgressBar)rowView.findViewById(R.id.pgbar);
 
 
         /*tvSensor.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Simply Rounded.ttf"));
@@ -84,7 +87,7 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
         tvSensor.setText(s.getNome());
         tvSensor.setTag(s.getId());
 
-        tvIP.setText(s.getIp());
+        //tvIP.setText(s.getIp());
 
         tvAmbiente.setText(s.getAmbiente().getNome());
 
@@ -116,36 +119,48 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
             img.setImageResource(R.drawable.selecione_imagem);
         }
 
-        TextView txtNetState = (TextView)rowView.findViewById(R.id.txtNetState);
+
+        //TextView txtNetState = (TextView)rowView.findViewById(R.id.txtNetState);
         if (!s.isActive()) {
 
             img.setImageResource(R.drawable.disconnected);
             tvSensor.setTextColor(Color.RED);
             tvAmbiente.setTextColor(Color.RED);
-            tvIP.setTextColor(Color.RED);
+            //tvIP.setTextColor(Color.RED);
             tvCarga1.setTextColor(Color.RED);
             tvCarga2.setTextColor(Color.RED);
-            txtNetState.setTextColor(Color.RED);
+            //txtNetState.setTextColor(Color.RED);
 
+            progressBar.setVisibility(View.VISIBLE);
             if (HSSensor.getInstance().isScanning())
-                txtNetState.setText("Procurando...");
+                progressBar.setVisibility(View.VISIBLE);
             else
-                txtNetState.setText("Offline");
+                progressBar.setVisibility(View.INVISIBLE);
+
 
         } else {
 
-            txtNetState.setTextColor(Color.BLACK);
-            txtNetState.setText("Online");
+            //txtNetState.setTextColor(Color.BLACK);
+            //txtNetState.setText("Online");
+            if (!s.getImagePath().isEmpty()) {
+                File imgFile= new File(s.getImagePath());
+                img.setImageURI(Uri.fromFile(imgFile));
+            } else {
+                img.setImageResource(R.drawable.selecione_imagem);
+            }
 
             tvSensor.setTextColor(Color.BLACK);
             tvAmbiente.setTextColor(Color.BLACK);
-            tvIP.setTextColor(Color.parseColor("#FFA0A0A0"));
+            //tvIP.setTextColor(Color.parseColor("#FFA0A0A0"));
             tvCarga1.setTextColor(Color.BLACK);
             tvCarga2.setTextColor(Color.BLACK);
-            txtNetState.setText("");
+
+            progressBar.setVisibility(View.INVISIBLE);
+            //txtNetState.setText("");
         }
 
-        LinearLayout layout = (LinearLayout)rowView.findViewById(R.id.layoutCargas);
+
+        /*LinearLayout layout = (LinearLayout)rowView.findViewById(R.id.layoutCargas);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -219,6 +234,7 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
 
             }
         });
+        */
 
         return rowView;
     }

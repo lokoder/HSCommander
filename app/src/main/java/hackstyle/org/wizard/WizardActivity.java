@@ -24,14 +24,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eftimoff.viewpagertransformers.CubeOutTransformer;
-import com.eftimoff.viewpagertransformers.FlipHorizontalTransformer;
-import com.eftimoff.viewpagertransformers.ForegroundToBackgroundTransformer;
-import com.eftimoff.viewpagertransformers.StackTransformer;
-import com.eftimoff.viewpagertransformers.TabletTransformer;
-import com.eftimoff.viewpagertransformers.ZoomInTransformer;
-import com.eftimoff.viewpagertransformers.ZoomOutTranformer;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
@@ -162,8 +154,32 @@ public class WizardActivity extends FragmentActivity {
                     progressDialog.setCancelable(false);
                     progressDialog.show();
 
-                    sendNewSensorTask = new SendNewSensorConfig();
-                    sendNewSensorTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+                    Sensor sensor = WizardSensor.getInstance().getSensor();
+                    if (sensor != null) {
+
+                        //precisamos de um id...
+
+                        SensorDAO sensorDAO = new SensorDAO(WizardActivity.this);
+                        int id = sensorDAO.insertSensor(sensor);
+                        if (id < 1) {
+
+                            try {
+                                throw new Exception("Erro ao inserir sensor no banco SensorDAO.insertSensor(s) < 1");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        sensor.setId(id);
+
+                        String message = "setinfo:" + sensor.getNome() +":"+ sensor.getSSID() +":"+ sensor.getSenha() +":"+
+                                sensor.getAmbiente().getId()+","+sensor.getAmbiente().getNome() +":"+ sensor.getId() +":"+
+                                sensor.getCarga(0).getPino() +","+ sensor.getCarga(0).getNome() +":"+
+                                sensor.getCarga(1).getPino() +","+ sensor.getCarga(1).getNome() +":";
+
+                        sendNewSensorTask = new SendNewSensorConfig();
+                        sendNewSensorTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, message);
+                    }
 
 
                 } else {
@@ -187,12 +203,13 @@ public class WizardActivity extends FragmentActivity {
     }
 
 
-    private class SendNewSensorConfig extends AsyncTask<Void, Void, HSError> {
+    private class SendNewSensorConfig extends AsyncTask<String, Void, HSError> {
 
         @Override
-        protected HSError doInBackground(Void... args) {
+        protected HSError doInBackground(String... arg) {
 
-            String sensorIP = WiFiUtil.getApIpAddr(WizardActivity.this);
+//            String sensorIP = WiFiUtil.getApIpAddr(WizardActivity.this);
+            String sensorIP = "192.168.1.46";
             String err = "";
 
             for (int i=0; i<2; i++) {
@@ -202,10 +219,11 @@ public class WizardActivity extends FragmentActivity {
 
                 try {
 
-                    sock.connect(addr, 3000);
+                    sock.connect(addr, 5000);
 
                     PrintWriter pout = new PrintWriter(sock.getOutputStream());
-                    pout.print(args[0] + "\n");
+                    //pout.print(args[0] + "\n");
+                    pout.print(arg[0]+"\n");
                     pout.flush();
 
                     byte[] b = new byte[256];
@@ -223,7 +241,14 @@ public class WizardActivity extends FragmentActivity {
                         continue;
                     }
 
-                    return new HSError(true, result);
+                    if (WizardSensor.getInstance().getSensor().getId() == sensor.getId()) {
+
+                        return new HSError(true, result);
+
+                    } else {
+
+                        return new HSError(false, result);
+                    }
 
                 } catch (Exception e) {
 

@@ -19,7 +19,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.86">
+        android:layout_weight="0.9">
 
         <ListView
             android:layout_width="match_parent"
@@ -27,7 +27,8 @@
             android:id="@+id/android:list"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:layout_weight="0.8" />
+            android:layout_weight="0.8"
+            android:drawSelectorOnTop="true" />
 
     </LinearLayout>
 
@@ -35,7 +36,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.14">
+        android:layout_weight="0.1">
 
         <RelativeLayout
             android:orientation="horizontal"
@@ -52,8 +53,8 @@
                 android:layout_centerInParent="true" />
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:id="@+id/imageViewAddSensor"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="false"
