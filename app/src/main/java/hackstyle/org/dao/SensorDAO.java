@@ -48,6 +48,16 @@ public class SensorDAO {
         return sensorId;
     }
 
+    public int deleteSensor(Sensor sensor) {
+
+        return dbAdapter.delete("Sensor", sensor.getId());
+    }
+
+    public int deleteSensor(int id) {
+
+        return dbAdapter.delete("Sensor", id);
+    }
+
 
     public Sensor getSensor(int id) {
 

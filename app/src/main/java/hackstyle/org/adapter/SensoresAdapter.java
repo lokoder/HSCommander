@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,11 +71,13 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
         ProgressBar progressBar = (ProgressBar)rowView.findViewById(R.id.pgbar);
 
 
-        /*tvSensor.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Simply Rounded.ttf"));
-        tvIP.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Simply Rounded.ttf"));
-        tvAmbiente.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Simply Rounded.ttf"));
-        tvCarga1.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Simply Rounded.ttf"));
-        tvCarga2.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Simply Rounded.ttf"));*/
+        String typename = "fonts/remissis sb.ttf";
+        String typename_c = "fonts/SourceSansPro-Semibold.otf";
+
+        tvSensor.setTypeface(Typeface.createFromAsset(context.getAssets(), typename));
+        tvAmbiente.setTypeface(Typeface.createFromAsset(context.getAssets(), typename));
+        tvCarga1.setTypeface(Typeface.createFromAsset(context.getAssets(), typename_c));
+        tvCarga2.setTypeface(Typeface.createFromAsset(context.getAssets(), typename_c));
 
         if (listSensor == null)
             return null;
@@ -84,27 +87,35 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
 
         Sensor s = listSensor.get(position);
 
-        tvSensor.setText(s.getNome());
+        String upperString = s.getNome().substring(0,1).toUpperCase() + s.getNome().substring(1);
+        tvSensor.setText(upperString);
         tvSensor.setTag(s.getId());
 
         //tvIP.setText(s.getIp());
 
-        tvAmbiente.setText(s.getAmbiente().getNome());
+        upperString = s.getAmbiente().getNome().substring(0,1).toUpperCase() + s.getAmbiente().getNome().substring(1);
+        tvAmbiente.setText(upperString);
 
         Carga carga = s.getCarga(0);
         if (carga != null) {
-            tvCarga1.setText(carga.getNome());
+            tvCarga1.setText(carga.getNome().toLowerCase());
             imgC1.setImageResource(R.drawable.on);
         } else {
+            imgC1.setVisibility(View.GONE);
+            tvCarga1.setVisibility(View.GONE);
+
             tvCarga1.setText("");
             imgC1.setImageResource(0);
         }
 
         carga = s.getCarga(1);
         if (carga != null) {
-            tvCarga2.setText(carga.getNome());
+            tvCarga2.setText(carga.getNome().toLowerCase());
             imgC2.setImageResource(R.drawable.on);
         } else {
+            imgC2.setVisibility(View.GONE);
+            tvCarga2.setVisibility(View.GONE);
+
             tvCarga2.setText("");
             imgC2.setImageResource(0);
         }
@@ -118,7 +129,6 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
         } else {
             img.setImageResource(R.drawable.selecione_imagem);
         }
-
 
         //TextView txtNetState = (TextView)rowView.findViewById(R.id.txtNetState);
         if (!s.isActive()) {
@@ -149,11 +159,11 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
                 img.setImageResource(R.drawable.selecione_imagem);
             }
 
-            tvSensor.setTextColor(Color.BLACK);
-            tvAmbiente.setTextColor(Color.BLACK);
+            tvSensor.setTextColor(Color.parseColor("#3f3f3f"));
+            tvAmbiente.setTextColor(Color.parseColor("#3f3f3f"));
             //tvIP.setTextColor(Color.parseColor("#FFA0A0A0"));
-            tvCarga1.setTextColor(Color.BLACK);
-            tvCarga2.setTextColor(Color.BLACK);
+            tvCarga1.setTextColor(Color.parseColor("#3f3f3f"));
+            tvCarga2.setTextColor(Color.parseColor("#3f3f3f"));
 
             progressBar.setVisibility(View.INVISIBLE);
             //txtNetState.setText("");

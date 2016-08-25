@@ -66,6 +66,7 @@ public class SensoresActivity extends AppCompatActivity {
             if (intent.getAction().equals(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION)) {
 
                 int stateAuthorized = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
+
                 if (mWifiManager.getConnectionInfo().getSupplicantState() == SupplicantState.DISCONNECTED) {
 
                     if (stateAuthorized == WifiManager.ERROR_AUTHENTICATING) {
@@ -82,20 +83,7 @@ public class SensoresActivity extends AppCompatActivity {
                                         SensoresActivity.this.finish();
                                     }
                                 }).show();
-
-                    } /*else if {
-
-                            new android.support.v7.app.AlertDialog.Builder(SensoresActivity.this)
-                                    .setMessage("Houve um erro descohecido ao conectar na rede do sensor. Tente novamente: " +
-                                    stateAuthorized)
-                                    .setCancelable(false)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            unlockOrientation();
-                                            SensoresActivity.this.finish();
-                                        }
-                                    }).show();
-                        }*/
+                    }
 
                 } else if (mWifiManager.getConnectionInfo().getSupplicantState() == SupplicantState.COMPLETED) {
 
@@ -105,13 +93,12 @@ public class SensoresActivity extends AppCompatActivity {
                     WifiInfo info = wifiManager.getConnectionInfo();
                     String ssid = info.getSSID().replace("\"", "");
 
-                    //chamar asynctask que verifica se é um sensor virgem
+                    //precisamos de um delay pra conexao wifi se estabelecer
                     try {
                         Thread.sleep(3000);
-                    } catch (Exception e) {
+                    } catch (Exception e) {}
 
-                    }
-
+                    //chamar asynctask que verifica se é um sensor virgem
                     SensorInquirer sensorInquirer = new SensorInquirer();
                     sensorInquirer.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
                 }
@@ -119,9 +106,7 @@ public class SensoresActivity extends AppCompatActivity {
                 Log.d(getClass().getName(), "onReceive: state: " + mWifiManager.getConnectionInfo().getSupplicantState() +
                         ", not authorized: " + (stateAuthorized == WifiManager.ERROR_AUTHENTICATING));
 
-                //dialogNovoSensor.dismiss();
             }
-            //unregisterReceiver(mWifiConnectReceiver);
         }
     };
 
@@ -135,6 +120,7 @@ public class SensoresActivity extends AppCompatActivity {
             sensorSSID = "AP 36";
 
             if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
+
                 List<ScanResult> mScanResults = mWifiManager.getScanResults();
 
                 for (ScanResult sr : mScanResults) {
@@ -150,10 +136,23 @@ public class SensoresActivity extends AppCompatActivity {
                         wfc.status = WifiConfiguration.Status.DISABLED;
                         wfc.priority = 40;
 
-
+                        /*
+                        //open
+                        wfc.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
                         wfc.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
                         wfc.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
+                        wfc.allowedAuthAlgorithms.clear();
+                        wfc.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+                        wfc.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+                        wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+                        wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
+                        wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+                        wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+                        */
+
                         wfc.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+                        wfc.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
+                        wfc.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
                         wfc.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
                         wfc.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
                         wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
@@ -167,15 +166,16 @@ public class SensoresActivity extends AppCompatActivity {
                         WifiManager wfMgr = (WifiManager) getSystemService(Context.WIFI_SERVICE);
                         int networkId = wfMgr.addNetwork(wfc);
                         if (networkId != -1) {
+
+                            unregisterReceiver(mWifiScanReceiver);
+
                             // success, can call wfMgr.enableNetwork(networkId, true) to connect
                             wfMgr.disconnect();
-                            dialogNovoSensor.setMessage("Conectando na rede do sensor...");
 
-                            //registerReceiver(mWifiConnectReceiver, new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION));
                             registerReceiver(mWifiConnectReceiver, new IntentFilter(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION));
                             wfMgr.enableNetwork(networkId, true);
 
-                            unregisterReceiver(mWifiScanReceiver);
+                            dialogNovoSensor.setMessage("Conectando na rede do sensor...");
                         }
 
                     }
@@ -297,8 +297,8 @@ public class SensoresActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
         if (requestCode == PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
@@ -350,6 +350,7 @@ public class SensoresActivity extends AppCompatActivity {
     }
 
     public void onPause() {
+
         super.onPause();
         if (sensoresUpdater != null && sensoresUpdater.getStatus() == AsyncTask.Status.RUNNING)
             sensoresUpdater.cancel(true);
@@ -495,7 +496,7 @@ public class SensoresActivity extends AppCompatActivity {
                 }
 
                 try {
-                    Thread.sleep((long) 600);
+                    Thread.sleep((long) 2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -539,7 +540,7 @@ public class SensoresActivity extends AppCompatActivity {
                 if (i == 1) {
 
                     try {
-                        Thread.sleep(3000);
+                        Thread.sleep(6000);
                     } catch (Exception e) {}
                 }
 

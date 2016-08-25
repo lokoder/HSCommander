@@ -53,6 +53,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import hackstyle.org.adapter.OnSwipeTouchListener;
+import hackstyle.org.dao.SensorDAO;
 import hackstyle.org.hscommander.R;
 import hackstyle.org.service.SensorCollector;
 import hackstyle.org.sqlite.DBAdapter;
@@ -147,7 +148,6 @@ public class IntroActivity extends AppCompatActivity {
 
 
         });
-
 
         //if (savedInstanceState == null)
         //    HSDialog.newInstance(this, "tttt", "zzzz", false).show(getFragmentManager(), "");
@@ -371,8 +371,7 @@ public class IntroActivity extends AppCompatActivity {
 
             HSDialog frag = new HSDialog();
             Bundle args = new Bundle();
-
-
+            
             HSDialog.context = context;
 
             args.putString("title", title);
@@ -383,6 +382,5 @@ public class IntroActivity extends AppCompatActivity {
             return frag;
         }
     }
-
 
 }

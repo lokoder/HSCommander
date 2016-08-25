@@ -52,6 +52,7 @@ public class WizardActivity extends FragmentActivity {
     private ProgressDialog progressDialog;
     private SendNewSensorConfig sendNewSensorTask = null;
     private Dialog dialog;
+    Sensor sensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +155,7 @@ public class WizardActivity extends FragmentActivity {
                     progressDialog.setCancelable(false);
                     progressDialog.show();
 
-                    Sensor sensor = WizardSensor.getInstance().getSensor();
+                    sensor = WizardSensor.getInstance().getSensor();
                     if (sensor != null) {
 
                         //precisamos de um id...
@@ -285,6 +286,8 @@ public class WizardActivity extends FragmentActivity {
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 unlockOrientation();
+                                SensorDAO sensorDAO = new SensorDAO(WizardActivity.this);
+                                sensorDAO.deleteSensor(sensor);
                                 WizardActivity.this.finish();
                             }
                         })
@@ -326,6 +329,7 @@ public class WizardActivity extends FragmentActivity {
 
                 Intent intent = new Intent(WizardActivity.this, SensoresActivity.class);
                 startActivity(intent);
+                WizardActivity.this.finish();
             }
 
         }

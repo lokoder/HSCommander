@@ -50,9 +50,19 @@ public class SensorCollector extends IntentService {
                 Log.d(getClass().getName(), "inicio do serviço");
 
                 sensorDAO = new SensorDAO(getApplicationContext());
+
                 listSensorDB = sensorDAO.getListSensor();
 
-                for (int i=0; i<2; i++) {
+                if (HSSensor.getInstance().getListSensorOn().size() < 1)
+                    HSSensor.getInstance().setListSensorOn(listSensorDB);
+
+                for (Sensor sensor: HSSensor.getInstance().getListSensorOn()) {
+
+                    Thread thread = new Thread(new QuerySensor(sensor));
+                    thread.start();
+                }
+
+                /*for (int i = 0; i < 2; i++) {
 
                     int foundSensors = checkRegisteredSensors();
 
@@ -64,13 +74,13 @@ public class SensorCollector extends IntentService {
                             break;
                         }
                     }
-                }
+                }*/
 
                 HSSensor.getInstance().setScanning(false);
 
                 Log.d(getClass().getName(), "fim do serviço");
-
                 sensorDAO.closeConnection();
+
             }
 
 
@@ -157,9 +167,9 @@ public class SensorCollector extends IntentService {
                 WiFiUtil wiFiUtil = new WiFiUtil(getApplicationContext());
                 String subnet = wiFiUtil.getNetworkAddress();
                 boolean configured = false;
-                int counterFoundSensor=0;
+                int counterFoundSensor = 0;
 
-                for (int i=2;i<255;i++) {
+                for (int i = 2; i < 255; i++) {
 
                     String host = subnet + "." + i;
 
@@ -244,9 +254,9 @@ public class SensorCollector extends IntentService {
 
             public Sensor buildSensorFromGetInfo(String getinfo) {
 
-                int count=0;
+                int count = 0;
 
-                for (int i=0; i<getinfo.length(); i++) {
+                for (int i = 0; i < getinfo.length(); i++) {
                     if (getinfo.charAt(i) == ':')
                         count++;
                 }
@@ -297,11 +307,80 @@ public class SensorCollector extends IntentService {
             }
 
 
-
         };
 
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
         executorService.scheduleAtFixedRate(runnable, 0, 60, TimeUnit.SECONDS);
+    }
+
+
+    private class QuerySensor implements Runnable {
+
+        Sensor sensor;
+
+        public QuerySensor(Sensor sensor) {
+            this.sensor = sensor;
+        }
+
+        @Override
+        public void run() {
+
+            String ip = sensor.getIp();
+
+            try {
+
+                Socket sock = new Socket();
+                SocketAddress addr = new InetSocketAddress(sensor.getIp(), 8000);
+
+                sock.connect(addr, 3000);
+                Log.d(getClass().getName(), "Conectamos em " + sensor.getIp());
+
+                PrintWriter pout = new PrintWriter(sock.getOutputStream());
+
+                pout.print("getinfo::::::::\n");
+                pout.flush();
+
+                Log.d(getClass().getName(), "Enviado getinfo:::::::: para " + sensor.getIp() + " - Aguardando resposta...");
+
+                byte[] b = new byte[256];
+
+                sock.setSoTimeout(5000);
+                int bytes = sock.getInputStream().read(b);
+                sock.close();
+
+                String result = new String(b, 0, bytes - 1);
+                Log.d(getClass().getName(), "Recebida resposta de " + sensor.getIp() + " para nosso getinfo::::::::");
+
+                Sensor tmpSensor = SensorBuilder.buildSensorFromGetInfo(getApplicationContext(), result);
+                if (tmpSensor == null) {
+                    Log.d(getClass().getName(), "Resposta: " + result);
+                    throw new Exception("Nao é um sensor valido");
+                }
+
+                if (sensor.equals(tmpSensor)) {
+
+                    sensor.setActive(true);
+
+                    int i = HSSensor.getInstance().getListSensorOn().indexOf(sensor);
+                    HSSensor.getInstance().getListSensorOn().get(i).setActive(true);
+
+
+
+                    Log.d(getClass().getName(), "Resposta de " + sensor.getIp() + " é um sensor valido!");
+                    Log.d(getClass().getName(), "Sensor " + sensor.getNome() + " : " + sensor.getIp() + " PAREADO!");
+                }
+
+
+            } catch (Exception e) {
+
+                if (e.getMessage() != null) {
+                    Log.i(getClass().getName(), e.getMessage());
+                }
+            }
+
+
+        }
+
     }
 
 
