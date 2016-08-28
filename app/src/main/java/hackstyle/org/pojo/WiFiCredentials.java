@@ -7,6 +7,12 @@ public class WiFiCredentials {
     private String ssid;
     private String senha;
 
+    public  WiFiCredentials() {
+        this.id = -1;
+        this.ssid = "";
+        this.senha = "";
+    }
+
     public int getId() {
         return id;
     }

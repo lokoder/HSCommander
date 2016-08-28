@@ -1,12 +1,15 @@
 package hackstyle.org.activity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,11 +17,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import hackstyle.org.adapter.AmbienteAdapter;
@@ -28,7 +33,7 @@ import hackstyle.org.pojo.Ambiente;
 
 public class GerenciaAmbienteActivity extends AppCompatActivity {
 
-    Button btnInsert;
+    ImageView imgInsert;
     ListView listView;
     AmbienteAdapter ambienteAdapter;
     List<Ambiente> listAmbiente;
@@ -39,11 +44,14 @@ public class GerenciaAmbienteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gerencia_ambiente);
 
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-        getSupportActionBar().setLogo(R.drawable.appiconbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("  " + "HSCommander");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Ambientes");
+
+        setToolbarConfig(toolbar);
+
 
         listView = (ListView) findViewById(R.id.listViewAmbiente);
         connect_list();
@@ -82,71 +90,72 @@ public class GerenciaAmbienteActivity extends AppCompatActivity {
         });
 
 
-        btnInsert = (Button) findViewById(R.id.btnInsertAmbiente);
-        btnInsert.setOnClickListener(new View.OnClickListener() {
+        imgInsert = (ImageView) findViewById(R.id.imgInsertAmbiente);
+        imgInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                LinearLayout ll = (LinearLayout) view.getParent();
-                EditText edtAmbienteTitle = (EditText) findViewById(R.id.edtAmbienteTitle);
-                String title = edtAmbienteTitle.getText().toString();
-                if (title.isEmpty())
-                    return;
+                final AlertDialog.Builder builder = new AlertDialog.Builder(GerenciaAmbienteActivity.this);
+                final View popup = getLayoutInflater().inflate(R.layout.popup_novo_ambiente, null);
+                builder.setView(popup);
 
-                AmbienteDAO ambienteDAO = new AmbienteDAO(view.getContext());
-                ambienteDAO.insertAmbiente(title);
+                final AlertDialog ad = builder.show();
 
-                edtAmbienteTitle.setText("");
+                Button btnPopupOK = (Button)popup.findViewById(R.id.btnPopupOK);
+                btnPopupOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-                Toast.makeText(view.getContext(), "Ambiente " + title + " inserido com sucesso!", Toast.LENGTH_SHORT).show();
-                connect_list();
-                btnInsert.requestFocus();
+                        EditText txtAmbiente = (EditText)popup.findViewById(R.id.edtNomeAmbiente);
+                        String ambiente = txtAmbiente.getText().toString();
+                        if (ambiente.isEmpty())
+                            return;
+
+                        AmbienteDAO ambienteDAO = new AmbienteDAO(GerenciaAmbienteActivity.this);
+                        ambienteDAO.insertAmbiente(ambiente);
+                        connect_list();
+
+                        ad.dismiss();
+                    }
+                });
+
             }
         });
 
-        TextView txtAmbienteCount = (TextView) findViewById(R.id.txtAmbienteCount);
-        if (listAmbiente.size() > 1) {
-            txtAmbienteCount.setText(listAmbiente.size() + " ambientes cadastrados:");
-        } else if (listAmbiente.size() < 1) {
-            txtAmbienteCount.setText("Nenhum ambiente cadastrado");
-        } else {
-            txtAmbienteCount.setText("1 ambiente cadastrado:");
+    }
+
+
+
+    private void setToolbarConfig(Toolbar toolbar) {
+
+        try {
+
+            Field f = toolbar.getClass().getDeclaredField("mTitleTextView");
+            f.setAccessible(true);
+
+            TextView mToolbarTitleTextView = (TextView) f.get(toolbar);
+            mToolbarTitleTextView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/HighlandGothicFLF.ttf"));
+
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
 
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         super.onOptionsItemSelected(item);
-        Intent i = null;
 
         switch (item.getItemId()) {
 
-            case R.id.start_novo_sensor:
-                i = new Intent(this, CheckNovoSensorActivity.class);
-                startActivity(i);
-                break;
+            case android.R.id.home:
 
-            case R.id.start_ambiente:
-                i = new Intent(this, GerenciaAmbienteActivity.class);
-                startActivity(i);
-                break;
-
-            case R.id.start_sensores:
-                i = new Intent(this, SensoresActivity.class);
-                startActivity(i);
-                break;
-
-            case R.id.start_varredura:
-                //i = new Intent(this, VarreduraSensoresActivity.class);
-                // startActivity(i);
-                break;
-
-            case R.id.start_wificred:
-                i = new Intent(this, WiFiCredentialsActivity.class);
-                startActivity(i);
+                Intent homeIntent = new Intent(this, IntroActivity.class);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
                 break;
         }
 
@@ -171,10 +180,8 @@ public class GerenciaAmbienteActivity extends AppCompatActivity {
         ambienteAdapter = new AmbienteAdapter(this, GerenciaAmbienteActivity.this, listAmbiente);
 
         if (listAmbiente != null)
-            //this.setListAdapter(ambienteAdapter);
             listView.setAdapter(ambienteAdapter);
-        else
-            listView.setAdapter(null);
+
     }
 
 

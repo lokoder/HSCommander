@@ -8,7 +8,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="hackstyle.org.activity.DetalheCargaActivity"
-    android:background="@drawable/irongrip_repeating"
     android:orientation="vertical">
 
     <TextView
@@ -16,10 +15,8 @@
         android:layout_height="wrap_content"
         android:text="Detalhe Carga"
         android:id="@+id/txtHeader"
-        android:background="@color/dim_foreground_material_light"
         android:textStyle="bold"
         android:textSize="18dp"
-        android:textColor="#ffffff"
         android:gravity="center" />
 
     <LinearLayout
@@ -57,7 +54,6 @@
                 android:textStyle="bold"
                 android:singleLine="false"
                 android:textSize="18dp"
-                android:textColor="#ffffff"
                 android:layout_marginTop="40dp" />
 
             <TextView
@@ -66,7 +62,6 @@
                 android:text="Pino"
                 android:id="@+id/txtPino"
                 android:textStyle="bold"
-                android:textColor="#ffffff"
                 android:textSize="18dp"
                 android:layout_marginTop="5dp" />
         </LinearLayout>

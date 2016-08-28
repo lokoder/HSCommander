@@ -1,6 +1,5 @@
 package hackstyle.org.main;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
-import hackstyle.org.activity.NovoSensorActivity;
 import hackstyle.org.dao.AmbienteDAO;
 import hackstyle.org.hscommander.R;
 import hackstyle.org.pojo.Ambiente;
@@ -97,9 +95,9 @@ public class HSCommander extends AppCompatActivity  {
 
             if (arg) {
 
-                Intent i = new Intent(HSCommander.this, NovoSensorActivity.class);
-                i.putExtra("sensorIP", sensor.getIp());
-                startActivity(i);
+                //Intent i = new Intent(HSCommander.this, NovoSensorActivity.class);
+                //i.putExtra("sensorIP", sensor.getIp());
+                //startActivity(i);
 
             } else {
 

@@ -38,6 +38,11 @@ public class AmbienteAdapter extends ArrayAdapter<Ambiente> {
         this.listAmbiente = listAmbiente;
     }
 
+    public void refresh(List<Ambiente> listAmbiente) {
+        this.listAmbiente = listAmbiente;
+        notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int position, final View convertView, ViewGroup parent) {
 

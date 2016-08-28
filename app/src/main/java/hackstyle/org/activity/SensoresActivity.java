@@ -30,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
@@ -40,12 +41,14 @@ import java.util.List;
 
 import hackstyle.org.adapter.SensoresAdapter;
 import hackstyle.org.dao.AmbienteDAO;
+import hackstyle.org.dao.SensorDAO;
 import hackstyle.org.hscommander.R;
 import hackstyle.org.log.HSError;
 import hackstyle.org.main.HSSensor;
 import hackstyle.org.pojo.Ambiente;
 import hackstyle.org.pojo.Carga;
 import hackstyle.org.pojo.Sensor;
+import hackstyle.org.wifi.WiFiUtil;
 import hackstyle.org.wizard.WizardActivity;
 
 public class SensoresActivity extends AppCompatActivity {
@@ -57,6 +60,7 @@ public class SensoresActivity extends AppCompatActivity {
     private SensoresAdapter sensoresAdapter;
     private SensoresUpdater sensoresUpdater;
     private WifiManager mWifiManager;
+    private ProgressDialog dialogNovoSensor;
     private final BroadcastReceiver mWifiConnectReceiver = new BroadcastReceiver() {
 
         @Override
@@ -80,7 +84,7 @@ public class SensoresActivity extends AppCompatActivity {
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         unlockOrientation();
-                                        SensoresActivity.this.finish();
+                                        dialogNovoSensor.dismiss();
                                     }
                                 }).show();
                     }
@@ -96,7 +100,8 @@ public class SensoresActivity extends AppCompatActivity {
                     //precisamos de um delay pra conexao wifi se estabelecer
                     try {
                         Thread.sleep(3000);
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
 
                     //chamar asynctask que verifica se é um sensor virgem
                     SensorInquirer sensorInquirer = new SensorInquirer();
@@ -109,15 +114,15 @@ public class SensoresActivity extends AppCompatActivity {
             }
         }
     };
-
-    private ProgressDialog dialogNovoSensor;
     private String sensorSSID;
     private final BroadcastReceiver mWifiScanReceiver = new BroadcastReceiver() {
+
+        private int count = 1;
 
         @Override
         public void onReceive(Context c, Intent intent) {
 
-            sensorSSID = "AP 36";
+            sensorSSID = "rede hackstyle";
 
             if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
 
@@ -125,7 +130,7 @@ public class SensoresActivity extends AppCompatActivity {
 
                 for (ScanResult sr : mScanResults) {
 
-                    if (sr.SSID.equals("AP 36")) {
+                    if (sr.SSID.equals(sensorSSID)) {
 
                         Log.d(getClass().getName(), "Rede hackstyle encontrada. Rede do Sensor?");
                         dialogNovoSensor.setMessage("Rede do sensor encontrada!");
@@ -133,13 +138,14 @@ public class SensoresActivity extends AppCompatActivity {
                         WifiConfiguration wfc = new WifiConfiguration();
 
                         wfc.SSID = "\"".concat(sr.SSID).concat("\"");
-                        wfc.status = WifiConfiguration.Status.DISABLED;
-                        wfc.priority = 40;
+                        wfc.allowedAuthAlgorithms.clear();
+                        //wfc.status = WifiConfiguration.Status.DISABLED;
+                        //wfc.priority = 40;
 
-                        /*
+
                         //open
                         wfc.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-                        wfc.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
+                        /*wfc.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
                         wfc.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
                         wfc.allowedAuthAlgorithms.clear();
                         wfc.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
@@ -147,10 +153,10 @@ public class SensoresActivity extends AppCompatActivity {
                         wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
                         wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
                         wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-                        wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-                        */
+                        wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);*/
 
-                        wfc.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+
+                        /*wfc.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
                         wfc.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
                         wfc.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
                         wfc.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
@@ -160,7 +166,7 @@ public class SensoresActivity extends AppCompatActivity {
                         wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
                         wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
 
-                        wfc.preSharedKey = "\"".concat("ap36erick").concat("\"");
+                        wfc.preSharedKey = "\"".concat("ap36erick").concat("\"");*/
 
 
                         WifiManager wfMgr = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -176,12 +182,25 @@ public class SensoresActivity extends AppCompatActivity {
                             wfMgr.enableNetwork(networkId, true);
 
                             dialogNovoSensor.setMessage("Conectando na rede do sensor...");
+
+                            return;
                         }
 
                     }
 
                     Log.d("X", sr.toString());
                 }
+
+                unregisterReceiver(mWifiScanReceiver);
+
+                new android.support.v7.app.AlertDialog.Builder(SensoresActivity.this)
+                        .setMessage("A rede do sensor não foi encontrada! Verifique e tente novamente.")
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialogNovoSensor.dismiss();
+                            }
+                        }).show();
             }
         }
     };
@@ -208,6 +227,37 @@ public class SensoresActivity extends AppCompatActivity {
 
         txtStatus = (TextView) findViewById(R.id.txtStatus);
         listView = (ListView) findViewById(android.R.id.list);
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                final Sensor sensor = (Sensor) adapterView.getItemAtPosition(position);
+                final SensorDAO sensorDAO = new SensorDAO(SensoresActivity.this);
+
+                lockOrientation();
+                new android.support.v7.app.AlertDialog.Builder(SensoresActivity.this)
+                        .setMessage("Remover o sensor " + sensor.getId() + ":" + sensor.getNome() + "?")
+                        .setCancelable(false)
+                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                sensor.setActive(false);
+                                sensorDAO.deleteSensor(sensor);
+                                HSSensor.getInstance().getListSensorOn().remove(sensor);
+                                sensoresAdapter.refresh(HSSensor.getInstance().getListSensorOn());
+                                unlockOrientation();
+                            }
+                        }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        unlockOrientation();
+                    }
+                }).show();
+
+                return true;
+            }
+        });
 
         /*if (HSSensor.getInstance().getListSensorOn().size() < 1) {
 
@@ -496,7 +546,7 @@ public class SensoresActivity extends AppCompatActivity {
                 }
 
                 try {
-                    Thread.sleep((long) 2000);
+                    Thread.sleep((long) 1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -530,10 +580,11 @@ public class SensoresActivity extends AppCompatActivity {
         @Override
         protected HSError doInBackground(Void... voids) {
 
-            String sensorIP = "192.168.1.46";
+            String sensorIP = WiFiUtil.getApIpAddr(SensoresActivity.this);
+//            String sensorIP = "192.168.1.46";
             String err = "";
 
-            for (int i=0; i<2; i++) {
+            for (int i = 0; i < 2; i++) {
 
                 Log.d(getClass().getName(), "Execução numero: " + i);
 
@@ -541,7 +592,8 @@ public class SensoresActivity extends AppCompatActivity {
 
                     try {
                         Thread.sleep(6000);
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
                 }
 
                 Socket sock = new Socket();

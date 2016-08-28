@@ -45,11 +45,11 @@ public class DetalheAmbienteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhe_ambiente);
 
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-        getSupportActionBar().setLogo(R.drawable.appiconbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("  " + "HSCommander");
+        //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+        //getSupportActionBar().setLogo(R.drawable.appiconbar);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setDisplayUseLogoEnabled(true);
+        //getSupportActionBar().setTitle("  " + "HSCommander");
 
         TextView txtAmbiente = (TextView)findViewById(R.id.txtAmbiente);
         Bundle bundle = getIntent().getExtras();
@@ -147,11 +147,6 @@ public class DetalheAmbienteActivity extends AppCompatActivity {
         Intent i = null;
 
         switch (item.getItemId()) {
-
-            case R.id.start_novo_sensor:
-                i = new Intent(this, CheckNovoSensorActivity.class);
-                startActivity(i);
-                break;
 
             case R.id.start_ambiente:
                 i = new Intent(this, GerenciaAmbienteActivity.class);

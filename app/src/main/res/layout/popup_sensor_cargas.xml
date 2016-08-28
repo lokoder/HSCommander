@@ -48,11 +48,21 @@
         <CheckBox
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fechar janela após o comando"
+            android:text="Fechar após confirmação do comando"
             android:id="@+id/checkBoxFecharAutomaticamente"
             android:scaleX="0.8" android:scaleY="0.8"
-            android:layout_alignParentStart="false"
-            android:gravity="center" />
+            android:layout_alignParentLeft="true"
+            android:gravity="left|center" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fechar ao clicar fora"
+            android:id="@+id/checkBoxFecharClicarFora"
+            android:gravity="left|center"
+            android:scaleX="0.8" android:scaleY="0.8"
+            android:layout_below="@id/checkBoxFecharAutomaticamente"
+            android:layout_alignParentLeft="true" />
     </RelativeLayout>
 
     <ListView

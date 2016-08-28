@@ -71,7 +71,9 @@ public class Tela4 extends Fragment {
                 } else {
 
                     sensor.getCarga(0).setNome(aparelho1);
+                    sensor.getCarga(0).setPino(12);
                 }
+
                 WizardSensor.getInstance().setSensor(sensor);
             }
             @Override
@@ -86,20 +88,21 @@ public class Tela4 extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                String aparelho1 = charSequence.toString();
+                String aparelho2 = charSequence.toString();
                 Sensor sensor = WizardSensor.getInstance().getSensor();
                 Carga carga = null;
 
                 if (sensor.getCarga(1) == null) {
 
                     carga = new Carga();
-                    carga.setNome(aparelho1);
-                    carga.setPino(12);
+                    carga.setNome(aparelho2);
+                    carga.setPino(14);
                     sensor.putCarga(carga);
 
                 } else {
 
-                    sensor.getCarga(1).setNome(aparelho1);
+                    sensor.getCarga(1).setNome(aparelho2);
+                    sensor.getCarga(1).setPino(14);
                 }
                 WizardSensor.getInstance().setSensor(sensor);
             }

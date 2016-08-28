@@ -33,11 +33,11 @@ public class WiFiCredentialsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wi_fi_credentials);
 
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+        /*getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
         getSupportActionBar().setLogo(R.drawable.appiconbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("  " + "HSCommander");
+        getSupportActionBar().setTitle("  " + "HSCommander");*/
 
         edtSSID = (EditText)findViewById(R.id.edtSSID);
         edtSenha = (EditText)findViewById(R.id.edtSenha);
@@ -124,11 +124,6 @@ public class WiFiCredentialsActivity extends AppCompatActivity {
         Intent i = null;
 
         switch (item.getItemId()) {
-
-            case R.id.start_novo_sensor:
-                i = new Intent(this, CheckNovoSensorActivity.class);
-                startActivity(i);
-                break;
 
             case R.id.start_ambiente:
                 i = new Intent(this, GerenciaAmbienteActivity.class);

@@ -56,25 +56,25 @@ public class SensorCollector extends IntentService {
                 if (HSSensor.getInstance().getListSensorOn().size() < 1)
                     HSSensor.getInstance().setListSensorOn(listSensorDB);
 
-                for (Sensor sensor: HSSensor.getInstance().getListSensorOn()) {
+                /*for (Sensor sensor: HSSensor.getInstance().getListSensorOn()) {
 
                     Thread thread = new Thread(new QuerySensor(sensor));
                     thread.start();
-                }
+                }*/
 
-                /*for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 2; i++) {
 
                     int foundSensors = checkRegisteredSensors();
 
-                    if (foundSensors < listSensorDB.size()) {
+                    //if (foundSensors < listSensorDB.size()) {
 
                         int foundLost = checkLostSensors();
 
                         if ((foundSensors + foundLost) == listSensorDB.size()) { //encontrou todos os sensores cadastrados...
                             break;
                         }
-                    }
-                }*/
+                    //}
+                }
 
                 HSSensor.getInstance().setScanning(false);
 
@@ -111,7 +111,7 @@ public class SensorCollector extends IntentService {
 
                     try {
 
-                        sock.connect(addr, 3000);
+                        sock.connect(addr, 5000);
                         Log.d(getClass().getName(), "Conectamos em " + sensor.getIp());
 
 
@@ -182,7 +182,7 @@ public class SensorCollector extends IntentService {
                         Socket sock = new Socket();
                         SocketAddress addr = new InetSocketAddress(host, 8000);
 
-                        sock.connect(addr, 100);
+                        sock.connect(addr, 500);
 
                         PrintWriter pout = new PrintWriter(sock.getOutputStream());
 
@@ -206,11 +206,19 @@ public class SensorCollector extends IntentService {
                             if (!sensor.isActive()) {
                                 if (sensor.equals(tmpSensor)) {
 
-                                    Log.d(getClass().getName(), "Encontrado sensor " + sensor.getNome() + " que mudou de ip" +
-                                            " anterior: " + sensor.getIp() + " - novo: " + host);
+                                    if (sensor.getIp().isEmpty()) {
+                                        Log.d(getClass().getName(), "Encontrado sensor recém cadastrado! ip: " + host);
+                                    } else {
+                                        Log.d(getClass().getName(), "Encontrado sensor " + sensor.getNome() + " que mudou de ip" +
+                                                " anterior: " + sensor.getIp() + " - novo: " + host);
+                                    }
 
-                                    sensor.setActive(true);
-                                    sensor.setIp(host);
+                                    List<Sensor> mainSensorList =  HSSensor.getInstance().getListSensorOn();
+                                    HSSensor.getInstance().getListSensorOn().get(mainSensorList.indexOf(sensor)).setActive(true);
+                                    HSSensor.getInstance().getListSensorOn().get(mainSensorList.indexOf(sensor)).setIp(host);
+
+                                    //sensor.setActive(true);
+                                    //sensor.setIp(host);
                                     sensorDAO.updateIP(sensor);
                                     configured = true;
                                     counterFoundSensor++;
@@ -231,9 +239,11 @@ public class SensorCollector extends IntentService {
 
                         Log.d(getClass().getName(), "Encontrado novo sensor: " + tmpSensor.getNome() + " - " + tmpSensor.getIp());
 
+
                     } catch (Exception e) {
                         Log.e(getClass().getName(), "ip " + host + " offline!" + e.getClass());
                     }
+
                 }
 
                 return counterFoundSensor;

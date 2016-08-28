@@ -13,7 +13,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import hackstyle.org.dao.WiFiCredentialsDAO;
 import hackstyle.org.hscommander.R;
+import hackstyle.org.pojo.WiFiCredentials;
 
 public class Tela5 extends Fragment {
 
@@ -71,6 +73,21 @@ public class Tela5 extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {}
         });
+
+
+        WiFiCredentialsDAO wifiDao = new WiFiCredentialsDAO(getContext());
+        WiFiCredentials wifi = wifiDao.getWiFiCredentials();
+
+        String ssid = "";
+        if (!wifi.getSSID().isEmpty())
+            ssid = wifi.getSSID();
+
+        String senha = "";
+        if (!wifi.getSenha().isEmpty())
+            senha = wifi.getSenha();
+
+        edtSSID.setText(ssid);
+        edtSenha.setText(senha);
 
         return v;
     }

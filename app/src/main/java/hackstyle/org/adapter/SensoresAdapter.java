@@ -23,7 +23,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import hackstyle.org.activity.CheckNovoSensorActivity;
 import hackstyle.org.dao.SensorDAO;
 import hackstyle.org.hscommander.R;
 import hackstyle.org.main.HSSensor;
@@ -170,18 +169,17 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
         }
 
 
-        /*LinearLayout layout = (LinearLayout)rowView.findViewById(R.id.layoutCargas);
+        LinearLayout layout = (LinearLayout)rowView.findViewById(R.id.layoutCarga);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 final Dialog dialog = new Dialog(context);
                 dialog.setContentView(R.layout.popup_sensor_cargas);
-                //dialog.setCancelable(false);
+                dialog.setCancelable(false);
 
                 ListView listView = (ListView)dialog.findViewById(R.id.listView);
                 TextView txtHeader = (TextView)dialog.findViewById(R.id.txtHeader);
-
 
                 SensorDAO sensorDAO = new SensorDAO(context);
                 Sensor sensor = sensorDAO.getSensor(listSensor.get(position).getId());
@@ -244,7 +242,6 @@ public class SensoresAdapter extends ArrayAdapter<Sensor> {
 
             }
         });
-        */
 
         return rowView;
     }

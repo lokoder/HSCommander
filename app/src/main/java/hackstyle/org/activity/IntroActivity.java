@@ -95,7 +95,7 @@ public class IntroActivity extends AppCompatActivity {
         imageView = (ImageView)findViewById(R.id.imageView5);
         imageView.setImageResource(R.drawable.infoxxl);
 
-        /* serviço de scan */
+        /* serviço de scan inicial */
         if (savedInstanceState == null) {
             Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SensorCollector.class);
             startService(intent);
@@ -152,6 +152,7 @@ public class IntroActivity extends AppCompatActivity {
         //if (savedInstanceState == null)
         //    HSDialog.newInstance(this, "tttt", "zzzz", false).show(getFragmentManager(), "");
 
+       // new SensorDAO(this).deleteSensor(25);
     }
 
 
@@ -211,8 +212,11 @@ public class IntroActivity extends AppCompatActivity {
                 break;
 
             case R.id.start_zerabanco:
-                DBAdapter dbAdapter = new DBAdapter(this);
-                dbAdapter.zeraDB();
+                //DBAdapter dbAdapter = new DBAdapter(this);
+                //dbAdapter.zeraDB();
+                Intent in = new Intent(this, ComandosGeraisActivity.class);
+                startActivity(in);
+
                 break;
         }
 

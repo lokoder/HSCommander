@@ -221,11 +221,6 @@ public class DetalheSensorActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
-            case R.id.start_novo_sensor:
-                i = new Intent(this, CheckNovoSensorActivity.class);
-                startActivity(i);
-                break;
-
             case R.id.start_ambiente:
                 i = new Intent(this, GerenciaAmbienteActivity.class);
                 startActivity(i);
@@ -249,7 +244,6 @@ public class DetalheSensorActivity extends AppCompatActivity {
             case android.R.id.home:
 
                 Intent homeIntent = new Intent(this, SensoresActivity.class);
-                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(homeIntent);
                 break;
         }

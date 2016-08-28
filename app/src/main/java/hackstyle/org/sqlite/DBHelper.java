@@ -48,10 +48,24 @@ public class DBHelper extends SQLiteOpenHelper {
                 "ssid varchar(32) not null, " +
                 "senha varchar(32) default '')";
 
+        String tb_tipo_sensor = "CREATE TABLE tipo_sensor (" +
+                "id integer not null primary key autoincrement, " +
+                "nome varchar(32) not null )";
+
+        String tb_win_fastcmd = "CREATE TABLE win_fastcmd (" +
+                "id integer not null primary key autoincrement, " +
+                "nome varchar(32) not null, " +
+                "valor int not null default 0 )";
+
         db.execSQL(tb_sensor);
         db.execSQL(tb_carga);
         db.execSQL(tb_ambiente);
         db.execSQL(tb_wifi);
+        db.execSQL(tb_tipo_sensor);
+        db.execSQL(tb_win_fastcmd);
+
+        db.execSQL("INSERT INTO Ambiente (id, nome) VALUES (1, 'Indefinido')");
+
     }
 
     @Override
@@ -61,8 +75,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS Carga");
         db.execSQL("DROP TABLE IF EXISTS Ambiente");
         db.execSQL("DROP TABLE IF EXISTS Wifi");
+        db.execSQL("DROP TABLE IF EXISTS tipo_sensor");
+        db.execSQL("DROP TABLE IF EXISTS win_fastcmd");
 
-        db.execSQL("INSERT INTO Ambiente (id, nome) VALUES (1, 'Nenhum')");
         onCreate(db);
     }
 

@@ -8,9 +8,4 @@
         android:title="xyz"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/action_favorite2"
-        android:icon="@drawable/list"
-        android:title="vfr"
-        app:showAsAction="always"/>
 </menu>

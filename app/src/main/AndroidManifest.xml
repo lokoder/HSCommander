@@ -26,11 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="hackstyle.org.activity.NovoSensorActivity" />
-        <activity
-            android:name="hackstyle.org.activity.VarreduraSensoresActivity"
-            android:noHistory="true" />
         <activity android:name="hackstyle.org.main.HSCommander" />
+
         <activity android:name="hackstyle.org.activity.SensoresActivity"
             android:parentActivityName="hackstyle.org.activity.IntroActivity"
             android:noHistory="true">
@@ -40,12 +37,12 @@
             </meta-data>
         </activity>
 
-        <activity android:name="hackstyle.org.activity.CheckNovoSensorActivity" />
         <activity android:name="hackstyle.org.activity.DetalheAmbienteActivity" />
 
         <activity
             android:name="hackstyle.org.activity.DetalheSensorActivity"
-            android:screenOrientation="portrait" android:parentActivityName="hackstyle.org.activity.SensoresActivity">
+            android:screenOrientation="portrait"
+            android:parentActivityName="hackstyle.org.activity.SensoresActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="hackstyle.org.activity.SensoresActivity">
@@ -53,14 +50,17 @@
         </activity>
 
         <activity android:name="hackstyle.org.activity.DetalheCargaActivity" />
-        <activity
-            android:name="hackstyle.org.activity.GerenciaAmbienteActivity"
-            android:windowSoftInputMode="stateHidden" />
+
+        <activity android:name="hackstyle.org.activity.GerenciaAmbienteActivity"
+            android:parentActivityName="hackstyle.org.activity.IntroActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="hackstyle.org.activity.IntroActivity">
+            </meta-data>
+        </activity>
+
         <activity android:name="hackstyle.org.activity.WiFiCredentialsActivity" />
         <activity android:name="hackstyle.org.activity.ComandosGeraisActivity" />
-        <activity
-            android:name="hackstyle.org.activity.BrandNewSensorActivity"
-            android:screenOrientation="portrait" />
 
         <service
             android:name="hackstyle.org.service.SensorCollector"

@@ -46,11 +46,11 @@ public class DetalheCargaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhe_carga);
 
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-        getSupportActionBar().setLogo(R.drawable.appiconbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("  " + "HSCommander");
+//        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+  //      getSupportActionBar().setLogo(R.drawable.appiconbar);
+    //    getSupportActionBar().setDisplayShowHomeEnabled(true);
+      //  getSupportActionBar().setDisplayUseLogoEnabled(true);
+        //getSupportActionBar().setTitle("  " + "HSCommander");
 
         cargaId = getIntent().getIntExtra("id", -1);
 
@@ -147,10 +147,6 @@ public class DetalheCargaActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
-            case R.id.start_novo_sensor:
-                i = new Intent(this, CheckNovoSensorActivity.class);
-                startActivity(i);
-                break;
 
             case R.id.start_ambiente:
                 i = new Intent(this, GerenciaAmbienteActivity.class);
